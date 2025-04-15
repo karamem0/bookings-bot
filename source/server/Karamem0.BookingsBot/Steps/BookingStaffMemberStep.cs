@@ -11,10 +11,11 @@ using Karamem0.BookingsBot.Models;
 using Karamem0.BookingsBot.Resources;
 using Karamem0.BookingsBot.Services;
 using Karamem0.BookingsBot.Steps.Abstraction;
-using Microsoft.Agents.BotBuilder;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.BotBuilder.Dialogs.Choices;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs.Choices;
+using Microsoft.Agents.Builder.Dialogs.Prompts;
+using Microsoft.Agents.Builder.State;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,32 +37,35 @@ public class BookingStaffMemberStep(UserState userState, IGraphService graphServ
     public override async Task<DialogTurnResult> OnBeforeCoreAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken = default)
     {
         // プロファイルを取得する
-        var bookingProfileAccessor = this.userState.CreateProperty<BookingProfile>(nameof(BookingProfile));
-        var bookingProfile = await bookingProfileAccessor.GetAsync(stepContext.Context, () => new BookingProfile(), cancellationToken);
+        var bookingProfile = this.userState.GetValue<BookingProfile>(nameof(BookingProfile), () => new());
         // ダイアログで選択されたビジネスIDを取得する
         var bookingBusinessId = bookingProfile.BusinessId;
         if (bookingBusinessId is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingBusinessId)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingBusinessId)
+                )
+            );
         }
         // スタッフの一覧を取得する
-        var bookingStaffMembers = await this.graphService
-            .GetBookingStaffMembersAsync(bookingBusinessId, cancellationToken)
+        var bookingStaffMembers = await this
+            .graphService.GetBookingStaffMembersAsync(bookingBusinessId, cancellationToken)
             .ContinueWith(
-                task => task.Result
-                    .Select(item => new BookingStaffMemberOption
-                    {
-                        Id = item.Id,
-                        DisplayName = item.DisplayName
-                    })
+                task => task
+                    .Result.Select(
+                        item => new BookingStaffMemberOption
+                        {
+                            Id = item.Id,
+                            DisplayName = item.DisplayName
+                        }
+                    )
                     .ToArray()
             )
-            .ConfigureAwait(false)
-            ?? throw new InvalidOperationException(StringResources.ErrorNoBookingServiceMessage);
+            .ConfigureAwait(false);
+        _ = bookingStaffMembers ?? throw new InvalidOperationException(StringResources.ErrorNoBookingServiceMessage);
         // 値を一時的なプロパティに格納する
         stepContext.SetValue("BookingStaffMembers", bookingStaffMembers);
         // ダイアログを作成する
@@ -69,7 +73,11 @@ public class BookingStaffMemberStep(UserState userState, IGraphService graphServ
             this.DialogId,
             new PromptOptions
             {
-                Choices = ChoiceFactory.ToChoices(bookingStaffMembers.Select(item => item.DisplayName).ToArray()),
+                Choices = ChoiceFactory.ToChoices(
+                    bookingStaffMembers
+                        .Select(item => item.DisplayName)
+                        .ToArray()
+                ),
                 Prompt = MessageFactory.Text(StringResources.ChooseBookingStaffMemberMessage),
                 RetryPrompt = MessageFactory.Text(StringResources.RetryBookingStaffMemberMessage),
                 Validations = stepContext.Values
@@ -81,30 +89,35 @@ public class BookingStaffMemberStep(UserState userState, IGraphService graphServ
     public override async Task<DialogTurnResult> OnAfterCoreAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken = default)
     {
         // プロファイルを取得する
-        var bookingProfileAccessor = this.userState.CreateProperty<BookingProfile>(nameof(BookingProfile));
-        var bookingProfile = await bookingProfileAccessor.GetAsync(stepContext.Context, () => new BookingProfile(), cancellationToken);
+        var bookingProfile = this.userState.GetValue<BookingProfile>(nameof(BookingProfile), () => new());
         // ダイアログの結果を取得する
         if (stepContext.Result is not FoundChoice foundChoice)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(foundChoice)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(foundChoice)
+                )
+            );
         }
         // ダイアログで選択されたスタッフを取得する
         var bookingStaffMembers = stepContext.GetValue<BookingStaffMemberOption[]>("BookingStaffMembers");
         if (bookingStaffMembers is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingStaffMembers)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingStaffMembers)
+                )
+            );
         }
         var bookingStaffMemberId = bookingStaffMembers[foundChoice.Index].Id;
         // スタッフの情報をプロファイルに格納する
         bookingProfile.StaffMemberId = bookingStaffMemberId;
+        // プロファイルを保存する
+        this.userState.SetValue(nameof(BookingProfile), bookingProfile);
         // 次のステップに進む
         return await stepContext.NextAsync(cancellationToken: cancellationToken);
     }

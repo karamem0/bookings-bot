@@ -6,7 +6,8 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
-using Microsoft.Agents.BotBuilder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs.Prompts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,4 +28,3 @@ public abstract class ConfirmPromptStep : Step
     }
 
 }
-

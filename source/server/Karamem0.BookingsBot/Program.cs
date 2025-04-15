@@ -7,6 +7,9 @@
 //
 
 using Karamem0.BookingsBot;
+using Karamem0.BookingsBot.Bots;
+using Karamem0.BookingsBot.Dialogs;
+using Microsoft.Agents.Hosting.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +20,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
+
+_ = builder.AddAgent<DialogBot<MainDialog>>();
 
 var configuration = builder.Configuration;
 var services = builder.Services;

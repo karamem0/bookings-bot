@@ -9,12 +9,10 @@
 using Karamem0.BookingsBot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +25,7 @@ namespace Karamem0.BookingsBot.Controllers;
 public class TokenController(IHttpClientFactory httpClientFactory) : ControllerBase
 {
 
-    private readonly HttpClient httpClient = httpClientFactory.CreateClient("DirectLineToken");
+    private readonly HttpClient httpClient = httpClientFactory.CreateClient("DirectLine");
 
     [HttpPost()]
     public async Task<IActionResult> PostAsync()

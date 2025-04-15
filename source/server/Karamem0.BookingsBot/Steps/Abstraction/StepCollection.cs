@@ -6,7 +6,7 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
-using Microsoft.Agents.BotBuilder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,7 +42,9 @@ public abstract class StepCollection(params Step[] collection) : IEnumerable<Ste
 
     public IEnumerator<Step> GetEnumerator()
     {
-        return this.collection.AsEnumerable().GetEnumerator();
+        return this
+            .collection.AsEnumerable()
+            .GetEnumerator();
     }
 
 }

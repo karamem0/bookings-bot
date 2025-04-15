@@ -10,18 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Karamem0.BookingsBot.Models;
+namespace Karamem0.BookingsBot.Options;
 
-public record BookingBusinessOption
+public record AzureStorageBlobsOptions
 {
 
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    public Uri? Endpoint { get; set; }
 
-    [JsonPropertyName("displayName")]
-    public string? DisplayName { get; set; }
+    public string? ContainerName { get; set; }
 
 }

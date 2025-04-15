@@ -1,3 +1,5 @@
+name: Trigger on develop
+
 on:
   push:
     branches:
@@ -5,15 +7,15 @@ on:
 
 jobs:
   build:
-    name: Build
-    uses: ./.github/workflows/build.yml
+    name: Build source
+    uses: ./.github/workflows/build-source.yml
     secrets: inherit
     with:
       environment: dev
   deploy:
-    name: Deploy
+    name: Deploy to Azure
     needs: build
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy-to-azure.yml
     secrets: inherit
     with:
       environment: dev

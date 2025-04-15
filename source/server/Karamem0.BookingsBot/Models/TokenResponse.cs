@@ -5,6 +5,7 @@
 //
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Models;
 
-public class TokenResponse
+public record TokenResponse
 {
 
     [JsonPropertyName("token")]

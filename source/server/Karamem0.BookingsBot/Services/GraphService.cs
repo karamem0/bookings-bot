@@ -21,13 +21,21 @@ namespace Karamem0.BookingsBot.Services;
 public interface IGraphService
 {
 
-    Task<BookingAppointment> CreateBookingAppointmentAsync(string bookingBusinessId, BookingAppointment bookingAppointment, CancellationToken cancellationToken = default);
+    Task<BookingAppointment> CreateBookingAppointmentAsync(
+        string bookingBusinessId,
+        BookingAppointment bookingAppointment,
+        CancellationToken cancellationToken = default
+    );
 
     Task<BookingBusiness> GetBookingBusinessAsync(string bookingBusinessId, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<BookingBusiness>> GetBookingBusinessesAsync(CancellationToken cancellationToken = default);
 
-    Task<BookingService> GetBookingServiceAsync(string bookingBusinessId, string bookingServiceId, CancellationToken cancellationToken = default);
+    Task<BookingService> GetBookingServiceAsync(
+        string bookingBusinessId,
+        string bookingServiceId,
+        CancellationToken cancellationToken = default
+    );
 
     Task<IEnumerable<BookingService>> GetBookingServicesAsync(string bookingBusinessId, CancellationToken cancellationToken = default);
 
@@ -40,22 +48,23 @@ public class GraphService(GraphServiceClient graphServiceClient) : IGraphService
 
     private readonly GraphServiceClient graphServiceClient = graphServiceClient;
 
-    public async Task<BookingAppointment> CreateBookingAppointmentAsync(string bookingBusinessId, BookingAppointment bookingAppointment, CancellationToken cancellationToken = default)
+    public async Task<BookingAppointment> CreateBookingAppointmentAsync(
+        string bookingBusinessId,
+        BookingAppointment bookingAppointment,
+        CancellationToken cancellationToken = default
+    )
     {
-        var response = await this.graphServiceClient
-            .Solutions
-            .BookingBusinesses[bookingBusinessId]
-            .Appointments
-            .PostAsync(bookingAppointment, cancellationToken: cancellationToken)
+        var response = await this
+            .graphServiceClient.Solutions.BookingBusinesses[bookingBusinessId]
+            .Appointments.PostAsync(bookingAppointment, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         return response ?? throw new InvalidOperationException(StringResources.ErrorNoBookingAppointmentMessage);
     }
 
     public async Task<BookingBusiness> GetBookingBusinessAsync(string bookingBusinessId, CancellationToken cancellationToken = default)
     {
-        var response = await this.graphServiceClient
-            .Solutions
-            .BookingBusinesses[bookingBusinessId]
+        var response = await this
+            .graphServiceClient.Solutions.BookingBusinesses[bookingBusinessId]
             .GetAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         return response ?? throw new InvalidOperationException(StringResources.ErrorNoBookingBusinessMessage);
@@ -63,19 +72,20 @@ public class GraphService(GraphServiceClient graphServiceClient) : IGraphService
 
     public async Task<IEnumerable<BookingBusiness>> GetBookingBusinessesAsync(CancellationToken cancellationToken = default)
     {
-        var response = await this.graphServiceClient
-            .Solutions
-            .BookingBusinesses
-            .GetAsync(cancellationToken: cancellationToken)
+        var response = await this
+            .graphServiceClient.Solutions.BookingBusinesses.GetAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         return response?.Value ?? throw new InvalidOperationException(StringResources.ErrorNoBookingBusinessMessage);
     }
 
-    public async Task<BookingService> GetBookingServiceAsync(string bookingBusinessId, string bookingServiceId, CancellationToken cancellationToken = default)
+    public async Task<BookingService> GetBookingServiceAsync(
+        string bookingBusinessId,
+        string bookingServiceId,
+        CancellationToken cancellationToken = default
+    )
     {
-        var response = await this.graphServiceClient
-            .Solutions
-            .BookingBusinesses[bookingBusinessId]
+        var response = await this
+            .graphServiceClient.Solutions.BookingBusinesses[bookingBusinessId]
             .Services[bookingServiceId]
             .GetAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
@@ -84,22 +94,18 @@ public class GraphService(GraphServiceClient graphServiceClient) : IGraphService
 
     public async Task<IEnumerable<BookingService>> GetBookingServicesAsync(string bookingBusinessId, CancellationToken cancellationToken = default)
     {
-        var response = await this.graphServiceClient
-            .Solutions
-            .BookingBusinesses[bookingBusinessId]
-            .Services
-            .GetAsync(cancellationToken: cancellationToken)
+        var response = await this
+            .graphServiceClient.Solutions.BookingBusinesses[bookingBusinessId]
+            .Services.GetAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         return response?.Value ?? throw new InvalidOperationException(StringResources.ErrorNoBookingServiceMessage);
     }
 
     public async Task<IEnumerable<BookingStaffMember>> GetBookingStaffMembersAsync(string bookingBusinessId, CancellationToken cancellationToken = default)
     {
-        var response = await this.graphServiceClient
-            .Solutions
-            .BookingBusinesses[bookingBusinessId]
-            .StaffMembers
-            .GetAsync(cancellationToken: cancellationToken)
+        var response = await this
+            .graphServiceClient.Solutions.BookingBusinesses[bookingBusinessId]
+            .StaffMembers.GetAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         return response?.Value?.OfType<BookingStaffMember>() ?? throw new InvalidOperationException(StringResources.ErrorNoBookingStaffMemberMessage);
     }

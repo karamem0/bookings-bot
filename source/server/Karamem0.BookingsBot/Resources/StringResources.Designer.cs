@@ -213,7 +213,7 @@ namespace Karamem0.BookingsBot.Resources
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to 予約が完了しました。.
+        ///   Looks up a localized string similar to 予約が完了しました。ご利用ありがとうございました。.
         /// </summary>
         public static string CompleteBookingMessage
         {
@@ -323,7 +323,7 @@ namespace Karamem0.BookingsBot.Resources
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to こんにちは。予約サービスにようこそ。[キャンセル] と入力するといつでもキャンセルできます。.
+        ///   Looks up a localized string similar to こんにちは。予約サービスにようこそ。**キャンセル** と入力するといつでも中断できます。.
         /// </summary>
         public static string HelloMessage
         {

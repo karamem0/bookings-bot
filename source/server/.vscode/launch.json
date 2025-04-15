@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Bot",
+      "name": "Launch Web",
       "type": "dotnet",
       "request": "launch",
       "projectPath": "${workspaceFolder}/Karamem0.BookingsBot/Karamem0.BookingsBot.csproj"

@@ -9,17 +9,14 @@
 using Azure.Identity;
 using Azure.Storage;
 using Karamem0.BookingsBot.Adapters;
-using Karamem0.BookingsBot.Bots;
 using Karamem0.BookingsBot.Dialogs;
+using Karamem0.BookingsBot.Options;
 using Karamem0.BookingsBot.Services;
 using Karamem0.BookingsBot.Steps;
-using Microsoft.Agents.Authentication;
-using Microsoft.Agents.Authentication.Msal;
-using Microsoft.Agents.BotBuilder;
+using Microsoft.Agents.Builder.State;
 using Microsoft.Agents.Hosting.AspNetCore;
-using Microsoft.Agents.Memory.Blobs;
-using Microsoft.Agents.Protocols.Connector;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Storage;
+using Microsoft.Agents.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,84 +36,92 @@ namespace Karamem0.BookingsBot;
 public static class ConfigureServices
 {
 
-    private static readonly DefaultAzureCredential defaultAzureCredential = new(new DefaultAzureCredentialOptions()
-    {
-        ExcludeVisualStudioCodeCredential = true
-    });
+    private static readonly DefaultAzureCredential defaultAzureCredential = new(
+        new DefaultAzureCredentialOptions()
+        {
+            ExcludeVisualStudioCodeCredential = true
+        }
+    );
 
     public static IServiceCollection AddApiAuthentication(
         this IServiceCollection services,
         IConfiguration configuration,
-        string configSectionName = "AzureAD",
+        string configSectionName = "MicrosoftEntra",
         string jwtSchemaName = "ApiAuthencation"
     )
     {
-        _ = services.AddMicrosoftIdentityWebApiAuthentication(configuration, configSectionName, jwtSchemaName);
+        _ = services.AddMicrosoftIdentityWebApiAuthentication(
+            configuration,
+            configSectionName,
+            jwtSchemaName
+        );
         return services;
     }
 
-    public static IServiceCollection AddBot(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        string configSectionName = "AzureBot"
-    )
+    public static IServiceCollection AddBot(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = configuration.GetSection(configSectionName) ?? throw new InvalidOperationException();
-        var blobContainerUrl = section["StorageUrl"] ?? throw new InvalidOperationException();
+        var options = configuration
+            .GetSection("AzureStorageBlobs")
+            .Get<AzureStorageBlobsOptions>();
+        _ = options ?? throw new InvalidOperationException();
         services.AddCloudAdapter<AdapterWithErrorHandler>();
-        _ = services.AddSingleton<IConnections, ConfigurationConnections>();
-        _ = services.AddSingleton<IChannelServiceClientFactory, RestChannelServiceClientFactory>();
-        _ = services.AddSingleton<IStorage>(new BlobsStorage(
-            new Uri(blobContainerUrl),
-            defaultAzureCredential,
-            new StorageTransferOptions()
-        ));
+        _ = services.AddSingleton<IStorage>(
+            new BlobsStorage(
+                new Uri(options.Endpoint ?? throw new InvalidOperationException(), options.ContainerName),
+                defaultAzureCredential,
+                new StorageTransferOptions()
+            )
+        );
         _ = services.AddSingleton<ConversationState>();
         _ = services.AddSingleton<UserState>();
-        _ = services.AddTransient<IBot, DialogBot<MainDialog>>();
         return services;
     }
 
     public static IServiceCollection AddBotAuthentication(
         this IServiceCollection services,
         IConfiguration configuration,
-        string configSectionName = "Connections:BotServiceConnection:Settings",
         string jwtSchemaName = "BotAuthentication"
     )
     {
-        var section = configuration.GetSection(configSectionName) ?? throw new InvalidOperationException();
-        var clientId = section["ClientId"] ?? throw new InvalidOperationException();
-        var tenantId = section["TenantId"] ?? throw new InvalidOperationException();
+        var options = configuration
+            .GetSection("TokenValidation")
+            .Get<TokenValidationOptions>();
+        _ = options ?? throw new InvalidOperationException();
         _ = services
-            .AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(jwtSchemaName, options =>
-            {
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
+            .AddAuthentication(
+                options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(5),
-                    ValidIssuers = [
-                        "https://api.botframework.com",
-                        "https://sts.windows.net/d6d49420-f39b-4df7-a1dc-d59a935871db/",
-                        "https://login.microsoftonline.com/d6d49420-f39b-4df7-a1dc-d59a935871db/v2.0",
-                        "https://sts.windows.net/f8cdef31-a31e-4b4a-93e4-5f571e91255a/",
-                        "https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/v2.0",
-                        $"https://sts.windows.net/{tenantId}/",
-                        $"https://login.microsoftonline.com/{tenantId}/v2.0",
-                    ],
-                    ValidAudience = clientId,
-                    RequireSignedTokens = true,
-                    SignatureValidator = (token, parameters) => new JsonWebToken(token),
-                };
-            });
-        services.AddDefaultMsalAuth(configuration);
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
+            .AddJwtBearer(
+                jwtSchemaName,
+                jwtBearerOptions =>
+                {
+                    jwtBearerOptions.SaveToken = true;
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = true,
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(5),
+                        RequireSignedTokens = true,
+                        SignatureValidator = (token, parameters) => new JsonWebToken(token),
+                        ValidIssuers =
+                        [
+                            "https://api.botframework.com",
+                            "https://sts.windows.net/d6d49420-f39b-4df7-a1dc-d59a935871db/",
+                            "https://login.microsoftonline.com/d6d49420-f39b-4df7-a1dc-d59a935871db/v2.0",
+                            "https://sts.windows.net/f8cdef31-a31e-4b4a-93e4-5f571e91255a/",
+                            "https://login.microsoftonline.com/f8cdef31-a31e-4b4a-93e4-5f571e91255a/v2.0",
+                            $"https://sts.windows.net/{options.TenantId}/",
+                            $"https://login.microsoftonline.com/{options.TenantId}/v2.0",
+                        ],
+                        ValidAudiences = options.Audiences ?? [],
+                    };
+                }
+            );
         return services;
     }
 
@@ -127,37 +132,37 @@ public static class ConfigureServices
         return services;
     }
 
-    public static IServiceCollection AddDirectLineTokenClient(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        string configSectionName = "AzureBot"
-    )
+    public static IServiceCollection AddDirectLineTokenClient(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = configuration.GetSection(configSectionName) ?? throw new InvalidOperationException();
-        _ = services.AddHttpClient("DirectLineToken", (httpClient) =>
-        {
-            var directLineTokenEndpoint = section["DirectLineTokenUrl"] ?? throw new InvalidOperationException();
-            var directLineTokenSecret = section["DirectLineTokenSecret"] ?? throw new InvalidOperationException();
-            httpClient.BaseAddress = new Uri(directLineTokenEndpoint);
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                JwtBearerDefaults.AuthenticationScheme,
-                directLineTokenSecret
-            );
-        });
+        var options = configuration
+            .GetSection("DirectLine")
+            .Get<DirectLineOptions>();
+        _ = options ?? throw new InvalidOperationException();
+        _ = services.AddHttpClient(
+            "DirectLine",
+            (httpClient) =>
+            {
+                httpClient.BaseAddress = options.Endpoint ?? throw new InvalidOperationException();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, options.SecretKey ?? throw new InvalidOperationException());
+            }
+        );
         return services;
     }
 
     public static IServiceCollection AddMicrosoftGraph(
         this IServiceCollection services,
-        IConfiguration configuration,
-        string configSectionName = "MicrosoftGraph"
+        IConfiguration configuration
     )
     {
-        var section = configuration.GetSection(configSectionName) ?? throw new InvalidOperationException();
-        var tenantId = section["TenantId"] ?? throw new InvalidOperationException();
-        var clientId = section["ClientId"] ?? throw new InvalidOperationException();
-        var clientSecret = section["ClientSecret"] ?? throw new InvalidOperationException();
-        var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+        var options = configuration
+            .GetSection("MicrosoftGraph")
+            .Get<MicrosoftIdentityOptions>();
+        _ = options ?? throw new InvalidOperationException();
+        var credential = new ClientSecretCredential(
+            options.TenantId,
+            options.ClientId,
+            options.ClientSecret
+        );
         _ = services.AddSingleton(provider => new GraphServiceClient(credential));
         _ = services.AddSingleton<IGraphService, GraphService>();
         return services;
@@ -167,9 +172,7 @@ public static class ConfigureServices
     {
         // Main Steps
         _ = services.AddScoped<MainStep>();
-        _ = services.AddScoped(provider => new MainStepCollection(
-            provider.GetRequiredService<MainStep>()
-        ));
+        _ = services.AddScoped(provider => new MainStepCollection(provider.GetRequiredService<MainStep>()));
         // Booking Steps
         _ = services.AddScoped<BookingBusinessStep>();
         _ = services.AddScoped<BookingServiceStep>();
@@ -179,16 +182,18 @@ public static class ConfigureServices
         _ = services.AddScoped<BookingCustomerNameStep>();
         _ = services.AddScoped<BookingCustomerEmailStep>();
         _ = services.AddScoped<BookingConfirmStep>();
-        _ = services.AddScoped(provider => new BookingStepCollection(
-            provider.GetRequiredService<BookingBusinessStep>(),
-            provider.GetRequiredService<BookingServiceStep>(),
-            provider.GetRequiredService<BookingDateStep>(),
-            provider.GetRequiredService<BookingTimeStep>(),
-            provider.GetRequiredService<BookingStaffMemberStep>(),
-            provider.GetRequiredService<BookingCustomerNameStep>(),
-            provider.GetRequiredService<BookingCustomerEmailStep>(),
-            provider.GetRequiredService<BookingConfirmStep>()
-        ));
+        _ = services.AddScoped(
+            provider => new BookingStepCollection(
+                provider.GetRequiredService<BookingBusinessStep>(),
+                provider.GetRequiredService<BookingServiceStep>(),
+                provider.GetRequiredService<BookingDateStep>(),
+                provider.GetRequiredService<BookingTimeStep>(),
+                provider.GetRequiredService<BookingStaffMemberStep>(),
+                provider.GetRequiredService<BookingCustomerNameStep>(),
+                provider.GetRequiredService<BookingCustomerEmailStep>(),
+                provider.GetRequiredService<BookingConfirmStep>()
+            )
+        );
         return services;
     }
 

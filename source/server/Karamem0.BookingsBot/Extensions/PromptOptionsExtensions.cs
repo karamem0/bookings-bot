@@ -6,7 +6,7 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
-using Microsoft.Agents.BotBuilder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs.Prompts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,9 @@ public static class PromptOptionsExtensions
     {
         if (target.Validations is JsonElement element)
         {
-            var json = element.GetProperty(key).GetString();
+            var json = element
+                .GetProperty(key)
+                .GetString();
             if (json is not null)
             {
                 return JsonSerializer.Deserialize<T>(json);

@@ -6,8 +6,8 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
+using Microsoft.Agents.Builder;
 using Microsoft.Agents.Hosting.AspNetCore;
-using Microsoft.Agents.Protocols.Primitives;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,18 +21,22 @@ namespace Karamem0.BookingsBot.Controllers;
 [ApiController()]
 [Authorize(AuthenticationSchemes = "BotAuthentication")]
 [Route("api/messages")]
-public class BotController(IBotHttpAdapter adapter, IBot bot) : ControllerBase
+public class BotController(IAgentHttpAdapter adapter, IAgent bot) : ControllerBase
 {
 
-    private readonly IBotHttpAdapter adapter = adapter;
+    private readonly IAgentHttpAdapter adapter = adapter;
 
-    private readonly IBot bot = bot;
+    private readonly IAgent bot = bot;
 
     [HttpGet()]
     [HttpPost()]
     public async Task PostAsync()
     {
-        await this.adapter.ProcessAsync(this.Request, this.Response, this.bot);
+        await this.adapter.ProcessAsync(
+            this.Request,
+            this.Response,
+            this.bot
+        );
     }
 
 }

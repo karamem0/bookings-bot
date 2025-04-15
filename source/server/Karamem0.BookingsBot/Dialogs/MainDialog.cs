@@ -7,7 +7,7 @@
 //
 
 using Karamem0.BookingsBot.Steps;
-using Microsoft.Agents.BotBuilder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

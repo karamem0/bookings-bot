@@ -7,10 +7,11 @@
 //
 
 using Karamem0.BookingsBot.Resources;
-using Microsoft.Agents.BotBuilder;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.Protocols.Adapter;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder;
+using Microsoft.Agents.Builder.Compat;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Builder.State;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,11 @@ using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Bots;
 
-public class DialogBot<T>(ConversationState conversationState, UserState userState, T dialog) : ActivityHandler where T : Dialog
+public class DialogBot<T>(
+    ConversationState conversationState,
+    UserState userState,
+    T dialog
+) : ActivityHandler where T : Dialog
 {
 
     private readonly ConversationState conversationState = conversationState;
@@ -29,43 +34,59 @@ public class DialogBot<T>(ConversationState conversationState, UserState userSta
 
     private readonly T dialog = dialog;
 
-    public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
+    protected override async Task OnTurnBeginAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
     {
-        await base.OnTurnAsync(turnContext, cancellationToken);
-        await this.conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-        await this.userState.SaveChangesAsync(turnContext, false, cancellationToken);
+        await this.conversationState.LoadAsync(
+            turnContext,
+            false,
+            cancellationToken
+        );
+        await this.userState.LoadAsync(
+            turnContext,
+            false,
+            cancellationToken
+        );
+    }
+
+    protected override async Task OnTurnEndAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
+    {
+        await this.conversationState.SaveChangesAsync(
+            turnContext,
+            false,
+            cancellationToken
+        );
+        await this.userState.SaveChangesAsync(
+            turnContext,
+            false,
+            cancellationToken
+        );
     }
 
     protected override async Task OnMembersAddedAsync(
         IList<ChannelAccount> membersAdded,
-        ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken = default
+        ITurnContext<IConversationUpdateActivity> turnContext,
+        CancellationToken cancellationToken = default
     )
     {
         foreach (var member in turnContext.Activity.MembersAdded)
         {
             if (member.Id != turnContext.Activity.Recipient.Id)
             {
-                _ = await turnContext.SendActivityAsync(
-                    MessageFactory.Text(StringResources.HelloMessage),
-                    cancellationToken
-                );
+                _ = await turnContext.SendActivityAsync(MessageFactory.Text(StringResources.HelloMessage), cancellationToken);
                 await this.dialog.RunAsync(
                     turnContext,
-                    this.conversationState.CreateProperty<DialogState>(nameof(DialogState)),
+                    this.conversationState,
                     cancellationToken
                 );
             }
         }
     }
 
-    protected override async Task OnMessageActivityAsync(
-        ITurnContext<IMessageActivity> turnContext,
-        CancellationToken cancellationToken = default
-    )
+    protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken = default)
     {
         await this.dialog.RunAsync(
             turnContext,
-            this.conversationState.CreateProperty<DialogState>(nameof(DialogState)),
+            this.conversationState,
             cancellationToken
         );
     }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Models;
 
-public class BookingDateOption
+public record BookingDateOption
 {
 
     [JsonPropertyName("id")]

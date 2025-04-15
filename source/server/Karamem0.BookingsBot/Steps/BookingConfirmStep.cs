@@ -11,9 +11,10 @@ using Karamem0.BookingsBot.Models;
 using Karamem0.BookingsBot.Resources;
 using Karamem0.BookingsBot.Services;
 using Karamem0.BookingsBot.Steps.Abstraction;
-using Microsoft.Agents.BotBuilder;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs.Prompts;
+using Microsoft.Agents.Builder.State;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,27 +41,32 @@ public class BookingConfirmStep(UserState userState, IGraphService graphService)
     public override async Task<DialogTurnResult> OnBeforeCoreAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken = default)
     {
         // プロファイルを取得する
-        var bookingProfileAccessor = this.userState.CreateProperty<BookingProfile>(nameof(BookingProfile));
-        var bookingProfile = await bookingProfileAccessor.GetAsync(stepContext.Context, () => new BookingProfile(), cancellationToken);
+        var bookingProfile = this.userState.GetValue<BookingProfile>(nameof(BookingProfile), () => new());
         // アダプティブ カードを作成する
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(confirmCardName);
+        using var stream = Assembly
+            .GetExecutingAssembly()
+            .GetManifestResourceStream(confirmCardName);
         if (stream is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(stream)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(stream)
+                )
+            );
         }
         using var reader = new StreamReader(stream);
         var card = new AdaptiveCardTemplate(await reader.ReadToEndAsync(cancellationToken)).Expand(bookingProfile);
         // アダプティブ カードを送信する
-        _ = await stepContext.Context.SendActivityAsync(MessageFactory.Attachment(
-            new Attachment()
-            {
-                ContentType = "application/vnd.microsoft.card.adaptive",
-                Content = card
-            }),
+        _ = await stepContext.Context.SendActivityAsync(
+            MessageFactory.Attachment(
+                new Attachment()
+                {
+                    ContentType = "application/vnd.microsoft.card.adaptive",
+                    Content = card
+                }
+            ),
             cancellationToken
         );
         // ダイアログを作成する
@@ -77,8 +83,7 @@ public class BookingConfirmStep(UserState userState, IGraphService graphService)
     public override async Task<DialogTurnResult> OnAfterCoreAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken = default)
     {
         // プロファイルを取得する
-        var bookingProfileAccessor = this.userState.CreateProperty<BookingProfile>(nameof(BookingProfile));
-        var bookingProfile = await bookingProfileAccessor.GetAsync(stepContext.Context, () => new BookingProfile(), cancellationToken);
+        var bookingProfile = this.userState.GetValue<BookingProfile>(nameof(BookingProfile), () => new());
         // ダイアログで入力された結果を取得する
         var confirm = stepContext.Result as bool?;
         if (confirm is true)
@@ -87,21 +92,25 @@ public class BookingConfirmStep(UserState userState, IGraphService graphService)
             var bookingBusinessId = bookingProfile.BusinessId;
             if (bookingBusinessId is null)
             {
-                throw new InvalidOperationException(string.Format(
-                    null,
-                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                    nameof(bookingBusinessId)
-                ));
+                throw new InvalidOperationException(
+                    string.Format(
+                        null,
+                        CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                        nameof(bookingBusinessId)
+                    )
+                );
             }
             // ダイアログで選択されたサービスIDを取得する
             var bookingServiceId = bookingProfile.ServiceId;
             if (bookingServiceId is null)
             {
-                throw new InvalidOperationException(string.Format(
-                    null,
-                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                    nameof(bookingServiceId)
-                ));
+                throw new InvalidOperationException(
+                    string.Format(
+                        null,
+                        CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                        nameof(bookingServiceId)
+                    )
+                );
             }
             // ダイアログで入力された名前を取得する
             var bookingCustomerName = bookingProfile.CustomerName;
@@ -109,25 +118,29 @@ public class BookingConfirmStep(UserState userState, IGraphService graphService)
             var bookingCustomerEmail = bookingProfile.CustomerEmail;
             if (bookingCustomerEmail is null)
             {
-                throw new InvalidOperationException(string.Format(
-                    null,
-                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                    nameof(bookingCustomerEmail)
-                ));
+                throw new InvalidOperationException(
+                    string.Format(
+                        null,
+                        CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                        nameof(bookingCustomerEmail)
+                    )
+                );
             }
             // ダイアログで選択されたスタッフを取得する
             var bookingStaffMemberId = bookingProfile.StaffMemberId;
             if (bookingStaffMemberId is null)
             {
-                throw new InvalidOperationException(string.Format(
-                    null,
-                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                    nameof(bookingStaffMemberId)
-                ));
+                throw new InvalidOperationException(
+                    string.Format(
+                        null,
+                        CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                        nameof(bookingStaffMemberId)
+                    )
+                );
             }
             // 予約を作成する
-            _ = await this.graphService
-                .CreateBookingAppointmentAsync(
+            _ = await this
+                .graphService.CreateBookingAppointmentAsync(
                     bookingBusinessId,
                     new Graph.BookingAppointment()
                     {
@@ -135,14 +148,18 @@ public class BookingConfirmStep(UserState userState, IGraphService graphService)
                         CustomerEmailAddress = bookingCustomerEmail,
                         EndDateTime = new Graph.DateTimeTimeZone()
                         {
-                            DateTime = bookingProfile.EndTime?.ToUniversalTime().ToString("s"),
+                            DateTime = bookingProfile
+                                .EndTime?.ToUniversalTime()
+                                .ToString("s"),
                             TimeZone = "UTC",
                         },
                         ServiceId = bookingServiceId,
                         ServiceName = bookingProfile.ServiceName,
                         StartDateTime = new Graph.DateTimeTimeZone()
                         {
-                            DateTime = bookingProfile.StartTime?.ToUniversalTime().ToString("s"),
+                            DateTime = bookingProfile
+                                .StartTime?.ToUniversalTime()
+                                .ToString("s"),
                             TimeZone = "UTC",
                         },
                         StaffMemberIds = [bookingStaffMemberId]
@@ -151,18 +168,12 @@ public class BookingConfirmStep(UserState userState, IGraphService graphService)
                 )
                 .ConfigureAwait(false);
             // メッセージを送信する
-            _ = await stepContext.Context.SendActivityAsync(
-                MessageFactory.Text(StringResources.CompleteBookingMessage),
-                cancellationToken
-            );
+            _ = await stepContext.Context.SendActivityAsync(MessageFactory.Text(StringResources.CompleteBookingMessage), cancellationToken);
         }
         else
         {
             // メッセージを送信する
-            _ = await stepContext.Context.SendActivityAsync(
-                MessageFactory.Text(StringResources.CancelBookingMessage),
-                cancellationToken
-            );
+            _ = await stepContext.Context.SendActivityAsync(MessageFactory.Text(StringResources.CancelBookingMessage), cancellationToken);
         }
         // ダイアログを終了する
         return await stepContext.EndDialogAsync(null, cancellationToken);

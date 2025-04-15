@@ -7,8 +7,8 @@
 //
 
 using Karamem0.BookingsBot.Resources;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,11 +38,13 @@ public abstract class Step
         catch (Exception ex)
         {
             _ = await stepContext.Context.SendActivityAsync(
-                MessageFactory.Text(string.Format(
-                    null,
-                    CompositeFormat.Parse(StringResources.ErrorUnexpectedMessage),
-                    ex.Message
-                )),
+                MessageFactory.Text(
+                    string.Format(
+                        null,
+                        CompositeFormat.Parse(StringResources.ErrorUnexpectedMessage),
+                        ex.Message
+                    )
+                ),
                 cancellationToken: cancellationToken
             );
             // ダイアログを終了する
@@ -64,11 +66,13 @@ public abstract class Step
         catch (Exception ex)
         {
             _ = await stepContext.Context.SendActivityAsync(
-                MessageFactory.Text(string.Format(
-                    null,
-                    CompositeFormat.Parse(StringResources.ErrorUnexpectedMessage),
-                    ex.Message
-                )),
+                MessageFactory.Text(
+                    string.Format(
+                        null,
+                        CompositeFormat.Parse(StringResources.ErrorUnexpectedMessage),
+                        ex.Message
+                    )
+                ),
                 cancellationToken: cancellationToken
             );
             // ダイアログを終了する

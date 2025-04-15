@@ -157,7 +157,7 @@
     <value>予約する時刻を選択してください。</value>
   </data>
   <data name="CompleteBookingMessage" xml:space="preserve">
-    <value>予約が完了しました。</value>
+    <value>予約が完了しました。ご利用ありがとうございました。</value>
   </data>
   <data name="ConfirmBookingMessage" xml:space="preserve">
     <value>予約する内容はこれでよろしいですか？</value>
@@ -187,7 +187,7 @@
     <value>予約する人の名前を入力してください。</value>
   </data>
   <data name="HelloMessage" xml:space="preserve">
-    <value>こんにちは。予約サービスにようこそ。[キャンセル] と入力するといつでもキャンセルできます。</value>
+    <value>こんにちは。予約サービスにようこそ。**キャンセル** と入力するといつでも中断できます。</value>
   </data>
   <data name="RetryBookingBusinessMessage" xml:space="preserve">
     <value>ビジネスが正しくありません。ビジネスを選択しなおしてください。</value>

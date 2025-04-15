@@ -23,8 +23,16 @@ public class KiotaExtensionsTests
     public void KiotaExtensions_ToTimeSpan()
     {
         // Setup
-        var value = new Time(1, 30, 15);
-        var actual = new TimeSpan(1, 30, 15);
+        var value = new Time(
+            1,
+            30,
+            15
+        );
+        var actual = new TimeSpan(
+            1,
+            30,
+            15
+        );
         // Execute
         var expected = KiotaExtensions.ToTimeSpan(value);
         // Assert

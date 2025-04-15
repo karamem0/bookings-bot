@@ -10,9 +10,10 @@ using Karamem0.BookingsBot.Extensions;
 using Karamem0.BookingsBot.Models;
 using Karamem0.BookingsBot.Resources;
 using Karamem0.BookingsBot.Steps.Abstraction;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.BotBuilder.Dialogs.Choices;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs.Choices;
+using Microsoft.Agents.Builder.Dialogs.Prompts;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -38,19 +39,28 @@ public class BookingDateStep : ChoicePromptStep
         var bookingAvailableTime = stepContext.GetValue<DateTime?>("BookingAvailableTime");
         if (bookingAvailableTime is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingAvailableTime)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingAvailableTime)
+                )
+            );
         }
-        var bookingDates = Enumerable.Range(0, 6)
+        var bookingDates = Enumerable
+            .Range(0, 6)
             .Select(item => bookingAvailableTime!.Value.Date.AddDays(item))
-            .Select(item => new BookingDateOption()
-            {
-                Id = item,
-                DisplayName = item.ToString("m", CultureInfo.GetCultureInfo(stepContext.GetLocale()).DateTimeFormat)
-            });
+            .Select(
+                item => new BookingDateOption()
+                {
+                    Id = item,
+                    DisplayName = item.ToString(
+                        "m",
+                        CultureInfo.GetCultureInfo(stepContext.GetLocale())
+                            .DateTimeFormat
+                    )
+                }
+            );
         // 値を一時的なプロパティに格納する
         stepContext.SetValue("BookingDates", bookingDates.ToArray());
         // ダイアログを作成する
@@ -58,7 +68,11 @@ public class BookingDateStep : ChoicePromptStep
             this.DialogId,
             new PromptOptions
             {
-                Choices = ChoiceFactory.ToChoices(bookingDates.Select(item => item.DisplayName).ToArray()),
+                Choices = ChoiceFactory.ToChoices(
+                    bookingDates
+                        .Select(item => item.DisplayName)
+                        .ToArray()
+                ),
                 Prompt = MessageFactory.Text(StringResources.ChooseBookingDateMessage),
                 RetryPrompt = MessageFactory.Text(StringResources.RetryBookingDateMessage),
                 Validations = stepContext.Values
@@ -72,21 +86,25 @@ public class BookingDateStep : ChoicePromptStep
         // ダイアログの結果を取得する
         if (stepContext.Result is not FoundChoice foundChoice)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(foundChoice)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(foundChoice)
+                )
+            );
         }
         // ダイアログで選択された日付を取得する
         var bookingDates = stepContext.GetValue<BookingDateOption[]?>("BookingDates");
         if (bookingDates is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingDates)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingDates)
+                )
+            );
         }
         var bookingDateId = bookingDates[foundChoice.Index].Id;
         // 値を一時的なプロパティに格納する
@@ -106,43 +124,51 @@ public class BookingDateStep : ChoicePromptStep
         var bookingDates = promptContext.Options.GetValidation<BookingDateOption[]?>("BookingDates");
         if (bookingDates is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingDates)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingDates)
+                )
+            );
         }
         var bookingDateId = bookingDates[value.Index].Id;
         if (bookingDateId is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingDateId)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingDateId)
+                )
+            );
         }
         // 時刻の一覧を取得する
         var bookingAvailableTime = promptContext.Options.GetValidation<DateTime?>("BookingAvailableTime");
         var bookingBusinessHours = promptContext.Options.GetValidation<BookingBusinessHourOption[]?>("BookingBusinessHours");
         if (bookingBusinessHours is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingBusinessHours)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingBusinessHours)
+                )
+            );
         }
         var bookingBusinessHour = bookingBusinessHours.FirstOrDefault(item => item.DayOfWeek == bookingDateId.Value.DayOfWeek);
         if (bookingBusinessHour is null)
         {
-            throw new InvalidOperationException(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
-                nameof(bookingBusinessHour)
-            ));
+            throw new InvalidOperationException(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorNotFoundMessage),
+                    nameof(bookingBusinessHour)
+                )
+            );
         }
-        var bookingTimes = bookingBusinessHour.TimeSlots?
-            .Select(item => bookingDateId.Value.AddTicks(item.Ticks))
+        var bookingTimes = bookingBusinessHour
+            .TimeSlots?.Select(item => bookingDateId.Value.AddTicks(item.Ticks))
             .Where(item => item > bookingAvailableTime);
         if (bookingTimes is not null && bookingTimes.Any())
         {

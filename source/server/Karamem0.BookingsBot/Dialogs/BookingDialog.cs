@@ -8,8 +8,8 @@
 
 using Karamem0.BookingsBot.Resources;
 using Karamem0.BookingsBot.Steps;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

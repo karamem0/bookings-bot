@@ -13,7 +13,7 @@ import {
   Link,
   Text
 } from '@fluentui/react-components';
-import { SiGithub, SiMicrosoft } from 'react-icons/si';
+import { GrGithub, GrWindows } from 'react-icons/gr';
 import { EventHandler } from '../types/Event';
 import { FormattedMessage } from 'react-intl';
 import { css } from '@emotion/react';
@@ -59,7 +59,7 @@ function HomePage(props: Readonly<HomePageProps>) {
             color: ${theme.colorNeutralForegroundInverted};
           `}
           icon={(
-            <SiGithub
+            <GrGithub
               css={css`
                 font-size: 1rem;
                 line-height: 1rem;
@@ -122,7 +122,7 @@ function HomePage(props: Readonly<HomePageProps>) {
               appearance="primary"
               as="a"
               icon={(
-                <SiMicrosoft
+                <GrWindows
                   css={css`
                     font-size: 1rem;
                     line-height: 1rem;

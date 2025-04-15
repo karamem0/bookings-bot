@@ -9,8 +9,9 @@
 #pragma warning disable IDE0053
 
 using Karamem0.BookingsBot.Resources;
+using Microsoft.Agents.Builder;
 using Microsoft.Agents.Hosting.AspNetCore;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Hosting.AspNetCore.BackgroundQueue;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,16 +24,26 @@ namespace Karamem0.BookingsBot.Adapters;
 public class AdapterWithErrorHandler : CloudAdapter
 {
 
-    public AdapterWithErrorHandler(IChannelServiceClientFactory factory, ILogger<AdapterWithErrorHandler> logger)
-        : base(factory, logger)
+    public AdapterWithErrorHandler(
+        IChannelServiceClientFactory factory,
+        IActivityTaskQueue activityTaskQueue,
+        ILogger<AdapterWithErrorHandler> logger
+    )
+        : base(
+            factory,
+            activityTaskQueue,
+            logger
+        )
     {
         this.OnTurnError = async (turnContext, exception) =>
         {
-            _ = await turnContext.SendActivityAsync(string.Format(
-                null,
-                CompositeFormat.Parse(StringResources.ErrorUnexpectedMessage),
-                exception.Message
-            ));
+            _ = await turnContext.SendActivityAsync(
+                string.Format(
+                    null,
+                    CompositeFormat.Parse(StringResources.ErrorUnexpectedMessage),
+                    exception.Message
+                )
+            );
         };
     }
 

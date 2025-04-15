@@ -9,9 +9,10 @@
 using Karamem0.BookingsBot.Models;
 using Karamem0.BookingsBot.Resources;
 using Karamem0.BookingsBot.Steps.Abstraction;
-using Microsoft.Agents.BotBuilder;
-using Microsoft.Agents.BotBuilder.Dialogs;
-using Microsoft.Agents.Protocols.Primitives;
+using Microsoft.Agents.Builder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs.Prompts;
+using Microsoft.Agents.Builder.State;
+using Microsoft.Agents.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +47,13 @@ public class BookingCustomerNameStep(UserState userState) : TextPromptStep
     public override async Task<DialogTurnResult> OnAfterCoreAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken = default)
     {
         // プロファイルを取得する
-        var bookingProfileAccessor = this.userState.CreateProperty<BookingProfile>(nameof(BookingProfile));
-        var bookingProfile = await bookingProfileAccessor.GetAsync(stepContext.Context, () => new BookingProfile(), cancellationToken);
+        var bookingProfile = this.userState.GetValue<BookingProfile>(nameof(BookingProfile), () => new());
         // ダイアログで入力された名前を取得する
         var bookingCustomerName = stepContext.Result as string;
         // 名前の情報をプロファイルに格納する
         bookingProfile.CustomerName = bookingCustomerName;
+        // プロファイルを保存する
+        this.userState.SetValue(nameof(BookingProfile), bookingProfile);
         // 次のステップに進む
         return await stepContext.NextAsync(cancellationToken: cancellationToken);
     }

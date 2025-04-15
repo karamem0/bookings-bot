@@ -8,7 +8,7 @@
 
 using Karamem0.BookingsBot.Dialogs;
 using Karamem0.BookingsBot.Steps.Abstraction;
-using Microsoft.Agents.BotBuilder.Dialogs;
+using Microsoft.Agents.Builder.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,8 @@ public class MainStep(BookingDialog dialog) : DialogStep<BookingDialog>(dialog)
 
     public override async Task<DialogTurnResult> OnAfterCoreAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken = default)
     {
-        return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+        _ = await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+        return await stepContext.BeginDialogAsync(this.DialogId, cancellationToken: cancellationToken);
     }
 
 }
