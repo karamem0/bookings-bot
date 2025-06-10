@@ -8,7 +8,7 @@
     <Authors>karamem0</Authors>
     <Company>karamem0</Company>
     <Product>BookingsBot</Product>
-    <Copyright>Copyright (c) 2021-2024 karamem0</Copyright>
+    <Copyright>Copyright (c) 2021-2025 karamem0</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/karamem0/bookings-bot</PackageProjectUrl>
     <AssemblyVersion>0.0.0</AssemblyVersion>
@@ -22,18 +22,18 @@
 
   <ItemGroup>
     <PackageReference Include="AdaptiveCards.Templating" Version="2.0.5" />
-    <PackageReference Include="Azure.Identity" Version="1.13.2" />
-    <PackageReference Include="Microsoft.Agents.Authentication" Version="0.2.314-alpha" />
-    <PackageReference Include="Microsoft.Agents.Authentication.Msal" Version="0.2.314-alpha" />
-    <PackageReference Include="Microsoft.Agents.Builder" Version="0.2.314-alpha" />
-    <PackageReference Include="Microsoft.Agents.Builder.Dialogs" Version="0.2.314-alpha" />
-    <PackageReference Include="Microsoft.Agents.Hosting.AspNetCore" Version="0.2.314-alpha" />
-    <PackageReference Include="Microsoft.Agents.Storage.Blobs" Version="0.2.314-alpha" />
+    <PackageReference Include="Azure.Identity" Version="1.14.0" />
+    <PackageReference Include="Microsoft.Agents.Authentication" Version="1.1.107-beta" />
+    <PackageReference Include="Microsoft.Agents.Authentication.Msal" Version="1.1.107-beta" />
+    <PackageReference Include="Microsoft.Agents.Builder" Version="1.1.107-beta" />
+    <PackageReference Include="Microsoft.Agents.Builder.Dialogs" Version="1.1.107-beta" />
+    <PackageReference Include="Microsoft.Agents.Hosting.AspNetCore" Version="1.1.107-beta" />
+    <PackageReference Include="Microsoft.Agents.Storage.Blobs" Version="1.1.107-beta" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="9.0.4" />
-    <PackageReference Include="Microsoft.Graph" Version="5.76.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="3.8.3" />
-    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="3.8.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Graph" Version="5.79.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.9.2" />
+    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="3.9.2" />
   </ItemGroup>
 
   <ItemGroup>

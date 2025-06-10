@@ -15,17 +15,17 @@ jobs:
     steps:
       - name: Checkout repos
         uses: actions/checkout@v4
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
       - name: Update .env
         shell: pwsh
         run: |
           $content = Get-Content -Path ${{env.FILE_PATH}}
-          $content = $content -Replace "{{APP_CLIENT_ID}}", "${{vars.APP_CLIENT_ID}}"
-          $content = $content -Replace '{{APP_SERVER_ID}}', '${{vars.APP_SERVER_ID}}'
-          $content = $content -Replace "{{APP_TENANT_ID}}", "${{vars.APP_TENANT_ID}}"
+          $content = $content -Replace "{{MSAL_CLIENT_APP_ID}}", "${{vars.MSAL_CLIENT_APP_ID}}"
+          $content = $content -Replace "{{MSAL_SERVER_APP_ID}}", "${{vars.MSAL_SERVER_APP_ID}}"
+          $content = $content -Replace "{{MSAL_TENANT_ID}}", "${{vars.MSAL_TENANT_ID}}"
           $content = $content -Replace "{{TELEMETRY_CONNECTION_STRING}}", "${{vars.TELEMETRY_CONNECTION_STRING}}"
           Out-File -FilePath ${{env.FILE_PATH}} -InputObject $content -Encoding UTF8
         env:

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2024 karamem0
+// Copyright (c) 2021-2025 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -12,8 +12,8 @@ declare module 'ress';
 
 interface ImportMetaEnv {
   readonly VITE_MSAL_AUTHORITY: string,
-  readonly VITE_MSAL_CLIENT_ID: string,
-  readonly VITE_MSAL_SERVER_ID: string
+  readonly VITE_MSAL_CLIENT_APP_ID: string,
+  readonly VITE_MSAL_SERVER_APP_ID: string
 }
 
 interface ImportMeta {

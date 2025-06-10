@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2024 karamem0
+// Copyright (c) 2021-2025 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -36,13 +36,6 @@ namespace Karamem0.BookingsBot;
 public static class ConfigureServices
 {
 
-    private static readonly DefaultAzureCredential defaultAzureCredential = new(
-        new DefaultAzureCredentialOptions()
-        {
-            ExcludeVisualStudioCodeCredential = true
-        }
-    );
-
     public static IServiceCollection AddApiAuthentication(
         this IServiceCollection services,
         IConfiguration configuration,
@@ -68,7 +61,10 @@ public static class ConfigureServices
         _ = services.AddSingleton<IStorage>(
             new BlobsStorage(
                 new Uri(options.Endpoint ?? throw new InvalidOperationException(), options.ContainerName),
-                defaultAzureCredential,
+                new DefaultAzureCredential(new DefaultAzureCredentialOptions()
+                {
+                    ManagedIdentityClientId = options.ClientId
+                }),
                 new StorageTransferOptions()
             )
         );

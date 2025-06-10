@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2024 karamem0
+// Copyright (c) 2021-2025 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -7,12 +7,11 @@
 //
 
 import { BrowserCacheLocation } from '@azure/msal-browser';
-import env from '../env';
 
 export const msalConfig = {
   auth: {
-    authority: env.VITE_MSAL_AUTHORITY,
-    clientId: env.VITE_MSAL_CLIENT_ID,
+    authority: import.meta.env.VITE_MSAL_AUTHORITY,
+    clientId: import.meta.env.VITE_MSAL_CLIENT_APP_ID,
     redirectUri: `${window.location.origin}`
   },
   cache: {
@@ -23,6 +22,6 @@ export const msalConfig = {
 
 export const loginParams = {
   scopes: [
-    `${env.VITE_MSAL_SERVER_ID}/user_impersonation`
+    `${import.meta.env.VITE_MSAL_SERVER_APP_ID}/user_impersonation`
   ]
 };
