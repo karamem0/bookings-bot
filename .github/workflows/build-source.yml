@@ -1,16 +1,10 @@
 name: Build source
 
-on:
-  workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
+on: workflow_call
 
 jobs:
   run:
     name: Run
-    environment: ${{inputs.environment}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repos
@@ -19,6 +13,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
+      - name: Update microsoft-identity-association.json
+        shell: pwsh
+        run: |
+          $content = Get-Content -Path ${{env.FILE_PATH}}
+          $content = $content -Replace "{{MICROSOFT_CLIENT_APP_ID}}", "${{vars.MICROSOFT_CLIENT_APP_ID}}"
+          Out-File -FilePath ${{env.FILE_PATH}} -InputObject $content -Encoding UTF8
+        env:
+          FILE_PATH: source/client/public/.well-known/microsoft-identity-association.json
       - name: Update .env
         shell: pwsh
         run: |
@@ -64,3 +66,4 @@ jobs:
         with:
           name: build
           path: source/build
+          include-hidden-files: true

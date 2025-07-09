@@ -13,9 +13,10 @@ import {
   Link,
   Text
 } from '@fluentui/react-components';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { GrGithub, GrWindows } from 'react-icons/gr';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { EventHandler } from '../types/Event';
-import { FormattedMessage } from 'react-intl';
 import { css } from '@emotion/react';
 import messages from '../messages';
 import { useTheme } from '../providers/ThemeProvider';
@@ -32,135 +33,151 @@ function HomePage(props: Readonly<HomePageProps>) {
     onSignIn
   } = props;
 
+  const intl = useIntl();
   const { theme } = useTheme();
 
   return (
-    <div
-      css={css`
-        display: flex;
-        flex-flow: column;
-        min-width: 100%;
-        min-height: 100svh;
-      `}>
-      <header
-        css={css`
-          display: flex;
-          flex-flow: row;
-          min-height: 2.5rem;
-          padding: 0 1rem;
-          justify-content: end;
-          align-items: center;
-          background-color: ${theme.colorNeutralBackgroundInverted};
-        `}>
-        <Button
-          appearance="transparent"
-          as="a"
-          css={css`
-            color: ${theme.colorNeutralForegroundInverted};
-          `}
-          icon={(
-            <GrGithub
-              css={css`
-                font-size: 1rem;
-                line-height: 1rem;
-              `} />
-          )}
-          onClick={(event) => onLinkClick?.(event, 'GitHub')}>
-          <FormattedMessage {...messages.GitHub} />
-        </Button>
-      </header>
-      <main
+    <React.Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <meta
+            content={intl.formatMessage(messages.AppCreator)}
+            name="author" />
+          <meta
+            content={intl.formatMessage(messages.AppDescription)}
+            name="description" />
+          <title>
+            {intl.formatMessage(messages.AppTitle)}
+          </title>
+        </Helmet>
+      </HelmetProvider>
+      <div
         css={css`
           display: flex;
           flex-flow: column;
-          min-height: calc(100svh - 5rem);
-          background: linear-gradient(${theme.colorBrandBackground2Hover}, ${theme.colorBrandBackground2});
+          min-width: 100%;
+          min-height: 100svh;
         `}>
-        <div
+        <header
+          css={css`
+            display: flex;
+            flex-flow: row;
+            min-height: 2.5rem;
+            padding: 0 1rem;
+            justify-content: end;
+            align-items: center;
+            background-color: ${theme.colorNeutralBackgroundInverted};
+          `}>
+          <Button
+            appearance="transparent"
+            as="a"
+            css={css`
+              color: ${theme.colorNeutralForegroundInverted};
+            `}
+            icon={(
+              <GrGithub
+                css={css`
+                  font-size: 1rem;
+                  line-height: 1rem;
+                `} />
+            )}
+            onClick={(event) => onLinkClick?.(event, 'GitHub')}>
+            <FormattedMessage {...messages.GitHub} />
+          </Button>
+        </header>
+        <main
           css={css`
             display: flex;
             flex-flow: column;
-            grid-gap: 4rem;
-            padding: 4rem 0;
+            min-height: calc(100svh - 5rem);
+            background: linear-gradient(${theme.colorBrandBackground2Hover}, ${theme.colorBrandBackground2});
           `}>
           <div
             css={css`
               display: flex;
               flex-flow: column;
-              grid-gap: 1rem;
-              align-items: center;
-              justify-content: center;
+              grid-gap: 4rem;
+              padding: 4rem 0;
             `}>
-            <Text
-              as="h1"
+            <div
               css={css`
-                font-size: ${theme.fontSizeHero900};
-                font-weight: bold;
-                line-height: calc(${theme.fontSizeHero900} * 1.25);
-                color: ${theme.colorNeutralForeground2};
+                display: flex;
+                flex-flow: column;
+                grid-gap: 1rem;
+                align-items: center;
+                justify-content: center;
               `}>
-              <FormattedMessage {...messages.AppName} />
-            </Text>
-            <Text
+              <Text
+                as="h1"
+                css={css`
+                  font-size: ${theme.fontSizeHero900};
+                  font-weight: bold;
+                  line-height: calc(${theme.fontSizeHero900} * 1.25);
+                  color: ${theme.colorNeutralForeground2};
+                `}>
+                <FormattedMessage {...messages.AppTitle} />
+              </Text>
+              <Text
+                css={css`
+                  font-size: ${theme.fontSizeBase300};
+                  font-weight: bold;
+                  line-height: calc(${theme.fontSizeBase300} * 1.25);
+                  color: ${theme.colorNeutralForeground2};
+                `}>
+                <FormattedMessage {...messages.AppDescription} />
+              </Text>
+            </div>
+            <div
               css={css`
-                font-size: ${theme.fontSizeBase300};
-                font-weight: bold;
-                line-height: calc(${theme.fontSizeBase300} * 1.25);
-                color: ${theme.colorNeutralForeground2};
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                justify-content: center;
               `}>
-              <FormattedMessage {...messages.AppDescription} />
-            </Text>
+              <Button
+                appearance="primary"
+                as="a"
+                icon={(
+                  <GrWindows
+                    css={css`
+                      font-size: 1rem;
+                      line-height: 1rem;
+                    `} />
+                )}
+                onClick={onSignIn}>
+                <FormattedMessage {...messages.SignIn} />
+              </Button>
+            </div>
           </div>
-          <div
-            css={css`
-              display: flex;
-              flex-flow: column;
-              align-items: center;
-              justify-content: center;
-            `}>
-            <Button
-              appearance="primary"
-              as="a"
-              icon={(
-                <GrWindows
-                  css={css`
-                    font-size: 1rem;
-                    line-height: 1rem;
-                  `} />
-              )}
-              onClick={onSignIn}>
-              <FormattedMessage {...messages.SignIn} />
-            </Button>
-          </div>
-        </div>
-      </main>
-      <footer
-        css={css`
-          display: flex;
-          flex-flow: row;
-          align-items: center;
-          justify-content: center;
-          min-height: 2.5rem;
-          padding: 0 1rem;
-        `}>
-        <Link
-          as="button"
-          onClick={(event) => onLinkClick?.(event, 'TermsOfUse')}>
-          <FormattedMessage {...messages.TermsOfUse} />
-        </Link>
-        <Text
+        </main>
+        <footer
           css={css`
-            padding: 0 0.25rem;
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.5rem;
+            padding: 0 1rem;
           `}>
-          |
-        </Text>
-        <Link
-          as="button"
-          onClick={(event) => onLinkClick?.(event, 'PrivacyPolicy')}>
-          <FormattedMessage {...messages.PrivacyPolicy} />
-        </Link>
-      </footer>
-    </div>
+          <Link
+            as="button"
+            onClick={(event) => onLinkClick?.(event, 'TermsOfUse')}>
+            <FormattedMessage {...messages.TermsOfUse} />
+          </Link>
+          <Text
+            css={css`
+              padding: 0 0.25rem;
+            `}>
+            |
+          </Text>
+          <Link
+            as="button"
+            onClick={(event) => onLinkClick?.(event, 'PrivacyPolicy')}>
+            <FormattedMessage {...messages.PrivacyPolicy} />
+          </Link>
+        </footer>
+      </div>
+    </React.Fragment>
   );
 
 }

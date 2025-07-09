@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {
   Link,
   Spinner,
@@ -45,72 +46,87 @@ function MainPage(props: Readonly<MainPageProps>) {
   ]);
 
   return (
-    <FluentThemeProvider>
-      {
-        loading ? (
-          <div
-            css={css`
-            display: grid;
-            min-width: 100%;
-            min-height: 100svh;
-          `}>
-            <Spinner />
-          </div>
-        ) : (
-          <div
-            css={css`
-              display: flex;
-              flex-flow: column;
+    <React.Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <meta
+            content={intl.formatMessage(messages.AppCreator)}
+            name="author" />
+          <meta
+            content={intl.formatMessage(messages.AppDescription)}
+            name="description" />
+          <title>
+            {intl.formatMessage(messages.AppTitle)}
+          </title>
+        </Helmet>
+      </HelmetProvider>
+      <FluentThemeProvider>
+        {
+          loading ? (
+            <div
+              css={css`
+              display: grid;
               min-width: 100%;
               min-height: 100svh;
             `}>
-            <header
+              <Spinner />
+            </div>
+          ) : (
+            <div
               css={css`
                 display: flex;
-                flex-flow: row;
-                justify-content: space-between;
-                align-items: center;
-                min-height: 2.5rem;
-                padding: 0 1rem;
-                background-color: ${theme.colorNeutralBackgroundInverted};
+                flex-flow: column;
+                min-width: 100%;
+                min-height: 100svh;
               `}>
-              <Text
-                as="h1"
+              <header
                 css={css`
-                  font-size: ${theme.fontSizeBase400};
-                  font-weight: bold;
-                  line-height: calc(${theme.fontSizeBase400} * 1.25);
-                  color: ${theme.colorNeutralForegroundInverted};
+                  display: flex;
+                  flex-flow: row;
+                  justify-content: space-between;
+                  align-items: center;
+                  min-height: 2.5rem;
+                  padding: 0 1rem;
+                  background-color: ${theme.colorNeutralBackgroundInverted};
                 `}>
-                <FormattedMessage {...messages.AppName} />
-              </Text>
-              <Link
-                as="button"
+                <Text
+                  as="h1"
+                  css={css`
+                    font-size: ${theme.fontSizeBase400};
+                    font-weight: bold;
+                    line-height: calc(${theme.fontSizeBase400} * 1.25);
+                    color: ${theme.colorNeutralForegroundInverted};
+                  `}>
+                  <FormattedMessage {...messages.AppTitle} />
+                </Text>
+                <Link
+                  as="button"
+                  css={css`
+                    color: ${theme.colorNeutralForegroundInverted};
+                  `}
+                  onClick={onSingOut}>
+                  <FormattedMessage {...messages.SignOut} />
+                </Link>
+              </header>
+              <main
                 css={css`
-                  color: ${theme.colorNeutralForegroundInverted};
-                `}
-                onClick={onSingOut}>
-                <FormattedMessage {...messages.SignOut} />
-              </Link>
-            </header>
-            <main
-              css={css`
-                height: calc(100svh - 2.5rem);
-                padding: 1rem;
-                background: linear-gradient(${theme.colorBrandBackground2Hover}, ${theme.colorBrandBackground2});
-              `}>
-              <ReactWebChat
-                directLine={directLine}
-                locale={intl.locale}
-                styleOptions={{
-                  hideUploadButton: true,
-                  sendBoxButtonShadeBorderRadius: 8
-                }} />
-            </main>
-          </div>
-        )
-      }
-    </FluentThemeProvider>
+                  height: calc(100svh - 2.5rem);
+                  padding: 1rem;
+                  background: linear-gradient(${theme.colorBrandBackground2Hover}, ${theme.colorBrandBackground2});
+                `}>
+                <ReactWebChat
+                  directLine={directLine}
+                  locale={intl.locale}
+                  styleOptions={{
+                    hideUploadButton: true,
+                    sendBoxButtonShadeBorderRadius: 8
+                  }} />
+              </main>
+            </div>
+          )
+        }
+      </FluentThemeProvider>
+    </React.Fragment>
   );
 
 }

@@ -40,14 +40,13 @@ if (app.Environment.IsDevelopment())
 {
     _ = app.UseDeveloperExceptionPage();
 }
-else
-{
-    _ = app.UseWebSockets();
-}
+_ = app.UseHsts();
 _ = app.UseDefaultFiles();
 _ = app.UseStaticFiles();
+_ = app.UseWebSockets();
 _ = app.UseRouting();
 _ = app.UseAuthorization();
 _ = app.MapControllers();
+_ = app.MapFallbackToFile("index.html");
 
 await app.RunAsync();

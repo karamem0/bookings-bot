@@ -18,7 +18,7 @@ function MainPage() {
 
   const msal = useMsal();
 
-  const [ token, setToken ] = React.useState<string | undefined>(undefined);
+  const [ token, setToken ] = React.useState<string>();
 
   const [ , fetch ] = useAsyncFn(async (token: string) => {
     return await Promise.resolve()

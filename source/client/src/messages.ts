@@ -9,8 +9,9 @@
 import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
+  AppCreator: { defaultMessage: 'karamem0' },
   AppDescription: { defaultMessage: 'This is a chatbot to make bookings in Microsoft Bookings' },
-  AppName: { defaultMessage: 'Bookings Bot WebChat Client' },
+  AppTitle: { defaultMessage: 'Bookings Bot WebChat Client' },
   GitHub: { defaultMessage: 'GitHub' },
   GitHubLink: { defaultMessage: 'https://github.com/karamem0/bookings-bot' },
   PrivacyPolicy: { defaultMessage: 'Privacy Policy' },

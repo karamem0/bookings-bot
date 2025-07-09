@@ -34,7 +34,9 @@ function HomePage() {
       default:
         break;
     }
-  }, []);
+  }, [
+    intl
+  ]);
 
   const handleSignIn = React.useCallback(async () => {
     await msal.instance.loginRedirect(loginParams);

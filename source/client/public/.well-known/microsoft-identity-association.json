@@ -1,0 +1,7 @@
+{
+  "associatedApplications": [
+    {
+      "applicationId": "{{MICROSOFT_CLIENT_APP_ID}}"
+    }
+  ]
+}
