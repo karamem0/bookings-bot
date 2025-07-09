@@ -39,7 +39,7 @@ public static class ConfigureServices
     public static IServiceCollection AddApiAuthentication(
         this IServiceCollection services,
         IConfiguration configuration,
-        string configSectionName = "MicrosoftEntra",
+        string configSectionName = "MicrosoftIdentity",
         string jwtSchemaName = "ApiAuthencation"
     )
     {

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <PackageId>Karamem0.BookingsBot</PackageId>
+    <PackageId>Karamem0.BookingsBot.Web</PackageId>
     <Version>0.0.0</Version>
     <Authors>karamem0</Authors>
     <Company>karamem0</Company>

@@ -11,9 +11,9 @@
 declare module 'ress';
 
 interface ImportMetaEnv {
-  readonly VITE_MSAL_AUTHORITY: string,
-  readonly VITE_MSAL_CLIENT_APP_ID: string,
-  readonly VITE_MSAL_SERVER_APP_ID: string
+  readonly VITE_MICROSOFT_AUTHORITY: string,
+  readonly VITE_MICROSOFT_CLIENT_APP_ID: string,
+  readonly VITE_MICROSOFT_SERVER_APP_ID: string
 }
 
 interface ImportMeta {

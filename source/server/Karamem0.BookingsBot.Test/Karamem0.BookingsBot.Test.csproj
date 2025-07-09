@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Karamem0.BookingsBot\Karamem0.BookingsBot.csproj" />
+    <ProjectReference Include="..\Karamem0.BookingsBot.Web\Karamem0.BookingsBot.Web.csproj" />
   </ItemGroup>
 
 </Project>
