@@ -8,11 +8,6 @@
 
 using Microsoft.Kiota.Abstractions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Extensions.Tests;
 

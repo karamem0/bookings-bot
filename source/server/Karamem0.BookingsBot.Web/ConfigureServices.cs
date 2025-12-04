@@ -24,12 +24,7 @@ using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot;
 

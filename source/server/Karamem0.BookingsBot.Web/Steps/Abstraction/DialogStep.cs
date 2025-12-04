@@ -8,12 +8,7 @@
 
 using Microsoft.Agents.Builder.Dialogs;
 using Microsoft.Agents.Builder.Dialogs.Prompts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Steps.Abstraction;
 

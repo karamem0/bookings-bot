@@ -14,22 +14,13 @@ using Microsoft.Agents.Builder.Dialogs;
 using Microsoft.Agents.Builder.Dialogs.Choices;
 using Microsoft.Agents.Builder.Dialogs.Prompts;
 using Microsoft.Agents.Core.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Steps;
 
 public class BookingDateStep : ChoicePromptStep
 {
-
-    public BookingDateStep()
-    {
-    }
 
     public override string DialogId => "8d896d64-7ee7-4be0-b3ff-ab7c821519e0";
 

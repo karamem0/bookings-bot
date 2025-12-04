@@ -13,13 +13,8 @@ using Microsoft.Agents.Builder.Dialogs;
 using Microsoft.Agents.Builder.Dialogs.Prompts;
 using Microsoft.Agents.Builder.State;
 using Microsoft.Agents.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Steps;
 

@@ -9,12 +9,7 @@
 using Karamem0.BookingsBot.Resources;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Services;
 

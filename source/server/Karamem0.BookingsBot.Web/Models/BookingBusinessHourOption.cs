@@ -6,12 +6,7 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Models;
 

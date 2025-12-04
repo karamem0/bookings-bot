@@ -12,12 +12,7 @@ using Microsoft.Agents.Builder.Compat;
 using Microsoft.Agents.Builder.Dialogs;
 using Microsoft.Agents.Builder.State;
 using Microsoft.Agents.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Bots;
 
@@ -73,7 +68,7 @@ public class DialogBot<T>(
             if (member.Id != turnContext.Activity.Recipient.Id)
             {
                 _ = await turnContext.SendActivityAsync(MessageFactory.Text(StringResources.HelloMessage), cancellationToken);
-                await this.dialog.RunAsync(
+                _ = await this.dialog.RunAsync(
                     turnContext,
                     this.conversationState,
                     cancellationToken
@@ -84,7 +79,7 @@ public class DialogBot<T>(
 
     protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken = default)
     {
-        await this.dialog.RunAsync(
+        _ = await this.dialog.RunAsync(
             turnContext,
             this.conversationState,
             cancellationToken

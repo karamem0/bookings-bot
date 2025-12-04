@@ -13,11 +13,6 @@ using Microsoft.Agents.Builder;
 using Microsoft.Agents.Hosting.AspNetCore;
 using Microsoft.Agents.Hosting.AspNetCore.BackgroundQueue;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Karamem0.BookingsBot.Adapters;
 
