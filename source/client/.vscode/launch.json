@@ -2,8 +2,8 @@
   "version": "1.0.0",
   "configurations": [
     {
-      "name": "Launch Web",
-      "type": "chrome",
+      "name": "Launch Client",
+      "type": "msedge",
       "request": "launch",
       "url": "https://localhost:5173",
       "webRoot": "${workspaceFolder}",

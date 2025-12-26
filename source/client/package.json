@@ -16,10 +16,10 @@
     "formatjs:compile-ja": "formatjs compile 'src/translations/ja.json' --out-file 'src/translations/compiled/ja.json' --ast --format simple"
   },
   "dependencies": {
-    "@azure/msal-browser": "^4.26.2",
-    "@azure/msal-react": "^3.0.22",
+    "@azure/msal-browser": "^4.27.0",
+    "@azure/msal-react": "^3.0.23",
     "@emotion/react": "^11.14.0",
-    "@fluentui/react-components": "^9.72.7",
+    "@fluentui/react-components": "^9.72.9",
     "@microsoft/applicationinsights-react-js": "^18.3.6",
     "@microsoft/applicationinsights-web": "^3.3.10",
     "axios": "^1.13.2",
@@ -27,22 +27,21 @@
     "botframework-webchat-fluent-theme": "^4.18.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-helmet-async": "^2.0.5",
     "react-icons": "^5.5.0",
     "react-intl": "^7.1.14",
     "react-use": "^17.6.0",
     "ress": "^5.0.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@formatjs/cli": "^6.7.4",
+    "@eslint/js": "^9.39.2",
+    "@formatjs/cli": "^6.8.6",
     "@stylistic/eslint-plugin": "^5.6.1",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.3",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^5.1.1",
-    "babel-plugin-formatjs": "^10.5.41",
-    "eslint": "^9.39.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "babel-plugin-formatjs": "^11.0.6",
+    "eslint": "^9.39.2",
     "eslint-plugin-hooks": "^0.4.3",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -57,12 +56,14 @@
     "stylelint-config-standard-scss": "^16.0.0",
     "stylelint-order": "^7.0.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.48.1"
+    "typescript-eslint": "^8.50.1"
   },
   "overrides": {
     "@babel/runtime": "^7.28.4",
     "@babel/runtime-corejs3": "^7.28.4",
     "brace-expansion": "^2.0.2",
-    "esbuild": "^0.27.1"
+    "core-js": "^3.47.0",
+    "esbuild": "^0.27.2",
+    "uuid": "^13.0.0"
   }
 }

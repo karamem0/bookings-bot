@@ -34,17 +34,15 @@ public class BookingBusinessStep(UserState userState, IGraphService graphService
         // ビジネスの一覧を取得する
         var bookingBusinesses = await this
             .graphService.GetBookingBusinessesAsync(cancellationToken)
-            .ContinueWith(
-                task => task
-                    .Result.Where(item => item.Id is not null)
-                    .Select(
-                        item => new BookingBusinessOption()
-                        {
-                            Id = item.Id,
-                            DisplayName = item.DisplayName,
-                        }
-                    )
-                    .ToArray()
+            .ContinueWith(task => task
+                .Result.Where(item => item.Id is not null)
+                .Select(item => new BookingBusinessOption()
+                    {
+                        Id = item.Id,
+                        DisplayName = item.DisplayName,
+                    }
+                )
+                .ToArray()
             )
             .ConfigureAwait(false);
         // 値を一時的なプロパティに格納する
@@ -125,13 +123,11 @@ public class BookingBusinessStep(UserState userState, IGraphService graphService
             "BookingBusinessHours",
             bookingBusiness
                 .BusinessHours?.Where(item => item.Day != null)
-                .Select(
-                    item =>
+                .Select(item =>
                     {
                         var timeSpans = new List<TimeSpan>();
                         var timeSlots = item
-                            .TimeSlots?.Select(
-                                slot => new
+                            .TimeSlots?.Select(slot => new
                                 {
                                     item.Day,
                                     StartTime = slot

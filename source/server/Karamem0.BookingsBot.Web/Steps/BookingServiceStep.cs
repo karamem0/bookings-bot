@@ -48,16 +48,14 @@ public class BookingServiceStep(UserState userState, IGraphService graphService)
         // サービスの一覧を取得する
         var bookingServices = await this
             .graphService.GetBookingServicesAsync(bookingBusinessId, cancellationToken)
-            .ContinueWith(
-                task => task
-                    .Result.Select(
-                        item => new BookingServiceOption()
-                        {
-                            Id = item.Id,
-                            DisplayName = item.DisplayName
-                        }
-                    )
-                    .ToArray()
+            .ContinueWith(task => task
+                .Result.Select(item => new BookingServiceOption()
+                    {
+                        Id = item.Id,
+                        DisplayName = item.DisplayName
+                    }
+                )
+                .ToArray()
             )
             .ConfigureAwait(false);
         // 値を一時的なプロパティに格納する

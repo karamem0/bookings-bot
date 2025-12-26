@@ -15,7 +15,7 @@ namespace Karamem0.BookingsBot.Steps.Abstraction;
 public abstract class DialogStep<T>(T dialog) : Step where T : Dialog
 {
 
-    public override Dialog Dialog => dialog;
+    public override T Dialog => dialog;
 
     public virtual Task<bool> OnValidateAsync(PromptValidatorContext<bool> promptContext, CancellationToken cancellationToken = default)
     {

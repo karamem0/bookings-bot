@@ -32,11 +32,31 @@
     {
       "label": "format",
       "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "format"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "resharper",
+      "type": "shell",
       "command": "jb",
       "args": [
         "cleanupcode",
-        "--profile=\"Built-in: Reformat Code\"",
+        "--profile='Built-in: Reformat Code'",
+        "--exclude='**/*.config'",
         "${workspaceFolder}/Karamem0.BookingsBot.sln"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "agentsplayground",
+      "type": "shell",
+      "command": "agentsplayground",
+      "args": [
+        "-c",
+        "emulator"
       ],
       "problemMatcher": []
     }

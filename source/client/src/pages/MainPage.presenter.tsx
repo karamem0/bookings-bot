@@ -9,7 +9,6 @@
 import React from 'react';
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {
   Link,
   Spinner,
@@ -47,19 +46,15 @@ function MainPage(props: Readonly<MainPageProps>) {
 
   return (
     <React.Fragment>
-      <HelmetProvider>
-        <Helmet>
-          <meta
-            content={intl.formatMessage(messages.AppCreator)}
-            name="author" />
-          <meta
-            content={intl.formatMessage(messages.AppDescription)}
-            name="description" />
-          <title>
-            {intl.formatMessage(messages.AppTitle)}
-          </title>
-        </Helmet>
-      </HelmetProvider>
+      <meta
+        content={intl.formatMessage(messages.AppCreator)}
+        name="author" />
+      <meta
+        content={intl.formatMessage(messages.AppDescription)}
+        name="description" />
+      <title>
+        {intl.formatMessage(messages.AppTitle)}
+      </title>
       <FluentThemeProvider>
         {
           loading ? (
@@ -83,8 +78,8 @@ function MainPage(props: Readonly<MainPageProps>) {
                 css={css`
                   display: flex;
                   flex-flow: row;
-                  justify-content: space-between;
                   align-items: center;
+                  justify-content: space-between;
                   min-height: 2.5rem;
                   padding: 0 1rem;
                   background-color: ${theme.colorNeutralBackgroundInverted};
@@ -113,6 +108,9 @@ function MainPage(props: Readonly<MainPageProps>) {
                   height: calc(100svh - 2.5rem);
                   padding: 1rem;
                   background: linear-gradient(${theme.colorBrandBackground2Hover}, ${theme.colorBrandBackground2});
+                  .suggested-actions {
+                    flex-direction: row!important;
+                  }
                 `}>
                 <ReactWebChat
                   directLine={directLine}

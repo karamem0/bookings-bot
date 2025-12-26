@@ -80,8 +80,7 @@ public class BookingTimeStep(UserState userState) : ChoicePromptStep
         var bookingTimes = timeSlots
             .Select(item => bookingDateId.Value.AddTicks(item.Ticks))
             .Where(item => item > bookingAvailableTime)
-            .Select(
-                item => new BookingTimeOption()
+            .Select(item => new BookingTimeOption()
                 {
                     Id = item,
                     DisplayName = item.ToString(

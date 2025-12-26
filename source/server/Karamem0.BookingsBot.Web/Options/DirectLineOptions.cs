@@ -11,8 +11,8 @@ namespace Karamem0.BookingsBot.Options;
 public record DirectLineOptions
 {
 
-    public Uri? Endpoint { get; set; }
+    public required Uri Endpoint { get; set; }
 
-    public string? SecretKey { get; set; }
+    public required string SecretKey { get; set; }
 
 }

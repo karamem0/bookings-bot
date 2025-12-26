@@ -15,7 +15,6 @@ import {
 } from '@fluentui/react-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GrGithub, GrWindows } from 'react-icons/gr';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { EventHandler } from '../types/Event';
 import { css } from '@emotion/react';
 import messages from '../messages';
@@ -38,19 +37,15 @@ function HomePage(props: Readonly<HomePageProps>) {
 
   return (
     <React.Fragment>
-      <HelmetProvider>
-        <Helmet>
-          <meta
-            content={intl.formatMessage(messages.AppCreator)}
-            name="author" />
-          <meta
-            content={intl.formatMessage(messages.AppDescription)}
-            name="description" />
-          <title>
-            {intl.formatMessage(messages.AppTitle)}
-          </title>
-        </Helmet>
-      </HelmetProvider>
+      <meta
+        content={intl.formatMessage(messages.AppCreator)}
+        name="author" />
+      <meta
+        content={intl.formatMessage(messages.AppDescription)}
+        name="description" />
+      <title>
+        {intl.formatMessage(messages.AppTitle)}
+      </title>
       <div
         css={css`
           display: flex;
@@ -62,10 +57,10 @@ function HomePage(props: Readonly<HomePageProps>) {
           css={css`
             display: flex;
             flex-flow: row;
+            align-items: center;
+            justify-content: end;
             min-height: 2.5rem;
             padding: 0 1rem;
-            justify-content: end;
-            align-items: center;
             background-color: ${theme.colorNeutralBackgroundInverted};
           `}>
           <Button
@@ -96,14 +91,14 @@ function HomePage(props: Readonly<HomePageProps>) {
             css={css`
               display: flex;
               flex-flow: column;
-              grid-gap: 4rem;
+              gap: 4rem;
               padding: 4rem 0;
             `}>
             <div
               css={css`
                 display: flex;
                 flex-flow: column;
-                grid-gap: 1rem;
+                gap: 1rem;
                 align-items: center;
                 justify-content: center;
               `}>

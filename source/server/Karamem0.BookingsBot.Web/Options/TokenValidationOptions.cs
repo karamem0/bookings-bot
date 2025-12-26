@@ -11,8 +11,8 @@ namespace Karamem0.BookingsBot.Options;
 public record TokenValidationOptions
 {
 
-    public string[]? Audiences { get; set; }
+    public required string[] Audiences { get; set; }
 
-    public string? TenantId { get; set; }
+    public required string TenantId { get; set; }
 
 }

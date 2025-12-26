@@ -48,16 +48,14 @@ public class BookingStaffMemberStep(UserState userState, IGraphService graphServ
         // スタッフの一覧を取得する
         var bookingStaffMembers = await this
             .graphService.GetBookingStaffMembersAsync(bookingBusinessId, cancellationToken)
-            .ContinueWith(
-                task => task
-                    .Result.Select(
-                        item => new BookingStaffMemberOption
-                        {
-                            Id = item.Id,
-                            DisplayName = item.DisplayName
-                        }
-                    )
-                    .ToArray()
+            .ContinueWith(task => task
+                .Result.Select(item => new BookingStaffMemberOption
+                    {
+                        Id = item.Id,
+                        DisplayName = item.DisplayName
+                    }
+                )
+                .ToArray()
             )
             .ConfigureAwait(false);
         _ = bookingStaffMembers ?? throw new InvalidOperationException(StringResources.ErrorNoBookingServiceMessage);

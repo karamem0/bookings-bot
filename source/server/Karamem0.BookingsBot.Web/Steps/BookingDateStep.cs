@@ -41,8 +41,7 @@ public class BookingDateStep : ChoicePromptStep
         var bookingDates = Enumerable
             .Range(0, 6)
             .Select(item => bookingAvailableTime!.Value.Date.AddDays(item))
-            .Select(
-                item => new BookingDateOption()
+            .Select(item => new BookingDateOption()
                 {
                     Id = item,
                     DisplayName = item.ToString(
