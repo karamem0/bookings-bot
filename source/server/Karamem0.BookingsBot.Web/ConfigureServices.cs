@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2025 karamem0
+// Copyright (c) 2021-2026 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -38,13 +38,14 @@ public static class ConfigureServices
     {
         _ = builder.AddAgent<DialogAgentApplication<MainDialog>, AdapterWithErrorHandler>();
         _ = builder.Services.AddSingleton((provider) => new AgentApplicationOptions(provider.GetRequiredService<IStorage>())
-        {
-            TurnStateFactory = () => new TurnState(
-                provider.GetRequiredService<ConversationState>(),
-                provider.GetRequiredService<UserState>(),
-                new TempState()
-            )
-        });
+            {
+                TurnStateFactory = () => new TurnState(
+                    provider.GetRequiredService<ConversationState>(),
+                    provider.GetRequiredService<UserState>(),
+                    new TempState()
+                )
+            }
+        );
         var options = configuration
             .GetSection("AzureStorageBlobs")
             .Get<AzureStorageBlobsOptions>();
@@ -124,8 +125,8 @@ public static class ConfigureServices
 
     public static IServiceCollection AddDialogs(this IServiceCollection services)
     {
-        _ = services.AddSingleton<MainDialog>();
-        _ = services.AddSingleton<BookingDialog>();
+        _ = services.AddTransient<MainDialog>();
+        _ = services.AddTransient<BookingDialog>();
         return services;
     }
 
@@ -157,26 +158,24 @@ public static class ConfigureServices
             options.ClientId,
             options.ClientSecret
         );
-        _ = services.AddSingleton(provider => new GraphServiceClient(credential));
-        _ = services.AddSingleton<IGraphService, GraphService>();
+        _ = services.AddTransient(provider => new GraphServiceClient(credential));
+        _ = services.AddTransient<IGraphService, GraphService>();
         return services;
     }
 
     public static IServiceCollection AddSteps(this IServiceCollection services)
     {
-        // Main Steps
-        _ = services.AddSingleton<MainStep>();
-        _ = services.AddSingleton(provider => new MainStepCollection(provider.GetRequiredService<MainStep>()));
-        // Booking Steps
-        _ = services.AddSingleton<BookingBusinessStep>();
-        _ = services.AddSingleton<BookingServiceStep>();
-        _ = services.AddSingleton<BookingDateStep>();
-        _ = services.AddSingleton<BookingTimeStep>();
-        _ = services.AddSingleton<BookingStaffMemberStep>();
-        _ = services.AddSingleton<BookingCustomerNameStep>();
-        _ = services.AddSingleton<BookingCustomerEmailStep>();
-        _ = services.AddSingleton<BookingConfirmStep>();
-        _ = services.AddSingleton(provider => new BookingStepCollection(
+        _ = services.AddTransient<MainStep>();
+        _ = services.AddTransient(provider => new MainStepCollection(provider.GetRequiredService<MainStep>()));
+        _ = services.AddTransient<BookingBusinessStep>();
+        _ = services.AddTransient<BookingServiceStep>();
+        _ = services.AddTransient<BookingDateStep>();
+        _ = services.AddTransient<BookingTimeStep>();
+        _ = services.AddTransient<BookingStaffMemberStep>();
+        _ = services.AddTransient<BookingCustomerNameStep>();
+        _ = services.AddTransient<BookingCustomerEmailStep>();
+        _ = services.AddTransient<BookingConfirmStep>();
+        _ = services.AddTransient(provider => new BookingStepCollection(
                 provider.GetRequiredService<BookingBusinessStep>(),
                 provider.GetRequiredService<BookingServiceStep>(),
                 provider.GetRequiredService<BookingDateStep>(),

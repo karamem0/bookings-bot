@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2025 karamem0
+// Copyright (c) 2021-2026 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -51,50 +51,8 @@ public class DialogAgentApplication<T> : AgentApplication where T : Dialog
                 turnContext,
                 turnState.Conversation,
                 cancellationToken
-            ));
+            )
+        );
     }
-
-    // private readonly ConversationState conversationState = conversationState;
-
-    // private readonly UserState userState = userState;
-
-    // private readonly T dialog = dialog;
-
-    // protected override async Task OnTurnBeginAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
-    // {
-    //     await this.conversationState.LoadAsync(
-    //         turnContext,
-    //         false,
-    //         cancellationToken
-    //     );
-    //     await this.userState.LoadAsync(
-    //         turnContext,
-    //         false,
-    //         cancellationToken
-    //     );
-    // }
-
-    // protected override async Task OnTurnEndAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
-    // {
-    //     await this.conversationState.SaveChangesAsync(
-    //         turnContext,
-    //         false,
-    //         cancellationToken
-    //     );
-    //     await this.userState.SaveChangesAsync(
-    //         turnContext,
-    //         false,
-    //         cancellationToken
-    //     );
-    // }
-
-    // protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken = default)
-    // {
-    //     _ = await this.dialog.RunAsync(
-    //         turnContext,
-    //         this.conversationState,
-    //         cancellationToken
-    //     );
-    // }
 
 }

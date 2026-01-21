@@ -8,7 +8,7 @@
     <Authors>karamem0</Authors>
     <Company>karamem0</Company>
     <Product>BookingsBot</Product>
-    <Copyright>Copyright (c) 2021-2025 karamem0</Copyright>
+    <Copyright>Copyright (c) 2021-2026 karamem0</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/karamem0/bookings-bot</PackageProjectUrl>
     <AssemblyVersion>0.0.0</AssemblyVersion>
@@ -23,9 +23,7 @@
   <ItemGroup>
     <PackageReference Include="AdaptiveCards.Templating" />
     <PackageReference Include="Azure.Identity" />
-    <PackageReference Include="Microsoft.Agents.Authentication" />
     <PackageReference Include="Microsoft.Agents.Authentication.Msal" />
-    <PackageReference Include="Microsoft.Agents.Builder" />
     <PackageReference Include="Microsoft.Agents.Builder.Dialogs" />
     <PackageReference Include="Microsoft.Agents.Hosting.AspNetCore" />
     <PackageReference Include="Microsoft.Agents.Storage.Blobs" />

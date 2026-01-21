@@ -16,12 +16,12 @@
     "formatjs:compile-ja": "formatjs compile 'src/translations/ja.json' --out-file 'src/translations/compiled/ja.json' --ast --format simple"
   },
   "dependencies": {
-    "@azure/msal-browser": "^4.27.0",
-    "@azure/msal-react": "^3.0.23",
+    "@azure/msal-browser": "^4.28.1",
+    "@azure/msal-react": "^3.0.25",
     "@emotion/react": "^11.14.0",
     "@fluentui/react-components": "^9.72.9",
     "@microsoft/applicationinsights-react-js": "^18.3.6",
-    "@microsoft/applicationinsights-web": "^3.3.10",
+    "@microsoft/applicationinsights-web": "^3.3.11",
     "axios": "^1.13.2",
     "botframework-webchat": "^4.18.0",
     "botframework-webchat-fluent-theme": "^4.18.0",
@@ -34,13 +34,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@formatjs/cli": "^6.8.6",
-    "@stylistic/eslint-plugin": "^5.6.1",
-    "@types/node": "^25.0.3",
+    "@formatjs/cli": "^6.12.0",
+    "@stylistic/eslint-plugin": "^5.7.0",
+    "@types/node": "^25.0.9",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^5.1.2",
-    "babel-plugin-formatjs": "^11.0.6",
+    "babel-plugin-formatjs": "^11.2.1",
     "eslint": "^9.39.2",
     "eslint-plugin-hooks": "^0.4.3",
     "eslint-plugin-import": "^2.32.0",
@@ -48,15 +48,15 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-sonarjs": "^3.0.5",
-    "globals": "^16.5.0",
+    "globals": "^17.0.0",
     "postcss": "^8.5.6",
     "postcss-styled-syntax": "^0.7.1",
-    "stylelint": "^16.26.1",
-    "stylelint-config-recess-order": "^7.4.0",
-    "stylelint-config-standard-scss": "^16.0.0",
-    "stylelint-order": "^7.0.0",
+    "stylelint": "^17.0.0",
+    "stylelint-config-recess-order": "^7.6.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-order": "^7.0.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.50.1"
+    "typescript-eslint": "^8.53.1"
   },
   "overrides": {
     "@babel/runtime": "^7.28.4",
@@ -64,6 +64,7 @@
     "brace-expansion": "^2.0.2",
     "core-js": "^3.47.0",
     "esbuild": "^0.27.2",
+    "rimraf": "^6.1.2",
     "uuid": "^13.0.0"
   }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021-2025 karamem0
+// Copyright (c) 2021-2026 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -19,15 +19,18 @@ using System.Net.Http.Json;
 using System.Threading;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var configuration = builder.Configuration;
 
 builder.AddAgent(builder.Configuration);
 
 var services = builder.Services;
+
 _ = services.AddApplicationInsightsTelemetry();
 _ = services.AddApiAuthentication(configuration);
 _ = services.AddBotAuthentication(configuration);
-_ = services.AddAuthorizationBuilder()
+_ = services
+    .AddAuthorizationBuilder()
     .AddPolicy(
         "BotAuthentication",
         policy => _ = policy
