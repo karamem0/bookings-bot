@@ -1,6 +1,6 @@
 # Bookings Bot
 
-[![.github/workflows/trigger-on-main.yml](https://github.com/karamem0/bookings-bot/actions/workflows/trigger-on-main.yml/badge.svg)](https://github.com/karamem0/bookings-bot/actions/workflows/trigger-on-main.yml)
+[![.github/workflows/push-on-main.yml](https://github.com/karamem0/bookings-bot/actions/workflows/push-on-main.yml/badge.svg)](https://github.com/karamem0/bookings-bot/actions/workflows/push-on-main.yml)
 [![License](https://img.shields.io/github/license/karamem0/bookings-bot.svg)](https://github.com/karamem0/bookings-bot/blob/main/LICENSE)
 
 [Microsoft Bookings API](https://learn.microsoft.com/ja-jp/graph/api/resources/booking-api-overview) を使用して [Microsoft Bookings](https://www.microsoft.com/ja-jp/microsoft-365/business/scheduling-and-booking-app) の予約をするボットです。

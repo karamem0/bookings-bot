@@ -8,8 +8,9 @@
       "workloads": "aspire"
     },
     "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "22.22.0"
+      "version": "22.22.1"
     }
   },
   "postCreateCommand": {
