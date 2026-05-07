@@ -8,12 +8,13 @@
 
 import React from 'react';
 
-import { Event } from '../types/Event';
 import Presenter from './HomePage.presenter';
+
+import { useMsal } from '@azure/msal-react';
+import { useIntl } from 'react-intl';
 import { loginParams } from '../config/MsalConfig';
 import messages from '../messages';
-import { useIntl } from 'react-intl';
-import { useMsal } from '@azure/msal-react';
+import { Event } from '../types/Event';
 
 function HomePage() {
 

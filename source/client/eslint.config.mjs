@@ -6,29 +6,26 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
-import globals from 'globals';
-import hooks from 'eslint-plugin-hooks';
 import js from '@eslint/js';
+import stylistic from '@stylistic/eslint-plugin';
+import hooks from 'eslint-plugin-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import perfectionist from 'eslint-plugin-perfectionist';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import { reactRefresh } from 'eslint-plugin-react-refresh';
 import sonarjs from 'eslint-plugin-sonarjs';
-import stylistic from '@stylistic/eslint-plugin';
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
 import ts from 'typescript-eslint';
 
-export default ts.config(
+export default defineConfig(
   js.configs.recommended,
   ts.configs.recommended,
-  {
-    'ignores': [
-      'dist/**'
-    ]
-  },
   {
     'languageOptions': {
       'globals': {
         ...globals.browser,
-        ...globals.jest,
         ...globals.node
       }
     },
@@ -36,8 +33,10 @@ export default ts.config(
       '@stylistic': stylistic,
       'hooks': hooks,
       'jsx-a11y': jsxA11y,
+      'perfectionist': perfectionist,
       'react': react,
       'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
       'sonarjs': sonarjs
     },
     'settings': {
@@ -51,53 +50,6 @@ export default ts.config(
     'rules': {
       ...reactHooks.configs.recommended.rules,
       ...sonarjs.configs.recommended.rules,
-      'dot-notation': [
-        'error',
-        {
-          'allowPattern': '^[a-z]+(_[a-z]+)+$'
-        }
-      ],
-      'key-spacing': [
-        'error',
-        {
-          'afterColon': true
-        }
-      ],
-      'linebreak-style': [
-        'error',
-        'unix'
-      ],
-      'no-alert': 'error',
-      'no-console': [
-        'warn',
-        {
-          'allow': [
-            'error'
-          ]
-        }
-      ],
-      'no-unused-vars': 'off',
-      'no-use-before-define': 'off',
-      'no-var': 'error',
-      'sort-imports': [
-        'error',
-        {
-          'allowSeparatedGroups': true
-        }
-      ],
-      'space-before-function-paren': [
-        'error',
-        {
-          'anonymous': 'never',
-          'named': 'never',
-          'asyncArrow': 'always'
-        }
-      ],
-      '@stylistic/arrow-parens': [
-        'error',
-        'always'
-      ],
-      '@stylistic/arrow-spacing': 'error',
       '@stylistic/array-bracket-spacing': [
         'error',
         'always',
@@ -105,6 +57,11 @@ export default ts.config(
           'arraysInArrays': false
         }
       ],
+      '@stylistic/arrow-parens': [
+        'error',
+        'always'
+      ],
+      '@stylistic/arrow-spacing': 'error',
       '@stylistic/brace-style': [
         'error',
         '1tbs'
@@ -137,14 +94,6 @@ export default ts.config(
         'error',
         {
           'maximum': 1
-        }
-      ],
-      '@stylistic/jsx-sort-props': [
-        'error',
-        {
-          'callbacksLast': true,
-          'multiline': 'last',
-          'reservedFirst': true
         }
       ],
       '@stylistic/jsx-tag-spacing': [
@@ -181,13 +130,13 @@ export default ts.config(
         }
       ],
       '@stylistic/padded-blocks': 'off',
-      '@stylistic/quotes': [
-        'error',
-        'single'
-      ],
       '@stylistic/quote-props': [
         'error',
         'consistent'
+      ],
+      '@stylistic/quotes': [
+        'error',
+        'single'
       ],
       '@stylistic/semi': [
         'error',
@@ -205,6 +154,12 @@ export default ts.config(
           'varsIgnorePattern': '^_'
         }
       ],
+      'dot-notation': [
+        'error',
+        {
+          'allowPattern': '^[a-z]+(_[a-z]+)+$'
+        }
+      ],
       'hooks/sort': [
         'error',
         {
@@ -219,6 +174,98 @@ export default ts.config(
           ]
         }
       ],
+      'key-spacing': [
+        'error',
+        {
+          'afterColon': true
+        }
+      ],
+      'linebreak-style': [
+        'error',
+        'unix'
+      ],
+      'no-alert': 'error',
+      'no-console': [
+        'warn',
+        {
+          'allow': [
+            'error'
+          ]
+        }
+      ],
+      'no-unused-vars': 'off',
+      'no-use-before-define': 'off',
+      'no-var': 'error',
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          'customGroups': [
+            {
+              'elementNamePattern': '^on.+',
+              'groupName': 'callback'
+            }
+          ],
+          'groups': [
+            'unknown',
+            'method',
+            'callback'
+          ],
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'perfectionist/sort-jsx-props': [
+        'error',
+        {
+          'customGroups': [
+            {
+              'elementNamePattern': '^on.+',
+              'groupName': 'callback'
+            }
+          ],
+          'groups': [
+            'shorthand-prop',
+            'unknown',
+            'multiline-prop',
+            'callback'
+          ],
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          'customGroups': [
+            {
+              'elementNamePattern': '^on.+',
+              'groupName': 'callback'
+            }
+          ],
+          'groups': [
+            'unknown',
+            'method',
+            'callback'
+          ],
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
       'react/no-unknown-property': [
         'error',
         {
@@ -228,10 +275,19 @@ export default ts.config(
         }
       ],
       'sonarjs/no-empty-function': 'off',
+      'sonarjs/no-small-switch': 'off',
       'sonarjs/no-unknown-property': 'off',
       'sonarjs/no-unused-expressions': 'off',
       'sonarjs/no-unused-vars': 'off',
-      'sonarjs/prefer-single-boolean-return': 'off'
+      'sonarjs/prefer-single-boolean-return': 'off',
+      'space-before-function-paren': [
+        'error',
+        {
+          'anonymous': 'never',
+          'asyncArrow': 'always',
+          'named': 'never'
+        }
+      ]
     }
   }
 );

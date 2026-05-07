@@ -9,8 +9,8 @@
 import React from 'react';
 
 import { InteractionStatus } from '@azure/msal-browser';
-import Presenter from './MsalAdapter.presenter';
 import { useMsal } from '@azure/msal-react';
+import Presenter from './MsalAdapter.presenter';
 
 function MsalAdapter(props: Readonly<React.PropsWithChildren<unknown>>) {
 

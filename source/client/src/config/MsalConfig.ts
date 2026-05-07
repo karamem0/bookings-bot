@@ -12,7 +12,7 @@ export const msalConfig = {
   auth: {
     authority: import.meta.env.VITE_MICROSOFT_AUTHORITY,
     clientId: import.meta.env.VITE_MICROSOFT_CLIENT_APP_ID,
-    redirectUri: `${window.location.origin}`
+    redirectUri: `${window.location.origin}/auth_redirect`
   },
   cache: {
     cacheLocation: BrowserCacheLocation.SessionStorage,
@@ -21,6 +21,8 @@ export const msalConfig = {
 };
 
 export const loginParams = {
+  forceRefresh: true,
+  redirectUri: `${window.location.origin}/auth_redirect`,
   scopes: [
     `${import.meta.env.VITE_MICROSOFT_SERVER_APP_ID}/user_impersonation`
   ]

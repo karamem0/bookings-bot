@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="AltCover" />
+    <PackageReference Include="Microsoft.Agents.Builder.Testing" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="NUnit" />

@@ -8,17 +8,17 @@
 
 import React from 'react';
 
+import { css } from '@emotion/react';
 import {
   Button,
   Link,
   Text
 } from '@fluentui/react-components';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { GrGithub, GrWindows } from 'react-icons/gr';
-import { EventHandler } from '../types/Event';
-import { css } from '@emotion/react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import messages from '../messages';
 import { useTheme } from '../providers/ThemeProvider';
+import { EventHandler } from '../types/Event';
 
 interface HomePageProps {
   onLinkClick?: EventHandler<string>,

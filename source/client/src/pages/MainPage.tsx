@@ -9,10 +9,11 @@
 import React from 'react';
 
 import Presenter from './MainPage.presenter';
-import axios from 'axios';
-import { loginParams } from '../config/MsalConfig';
-import { useAsyncFn } from 'react-use';
+
 import { useMsal } from '@azure/msal-react';
+import axios from 'axios';
+import { useAsyncFn } from 'react-use';
+import { loginParams } from '../config/MsalConfig';
 
 function MainPage() {
 

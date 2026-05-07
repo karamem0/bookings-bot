@@ -8,18 +8,18 @@
 
 import React from 'react';
 
-import { FormattedMessage, useIntl } from 'react-intl';
+import { css } from '@emotion/react';
 import {
   Link,
   Spinner,
   Text
 } from '@fluentui/react-components';
 import ReactWebChat, { createDirectLine } from 'botframework-webchat';
-import { EventHandler } from '../types/Event';
 import { FluentThemeProvider } from 'botframework-webchat-fluent-theme';
-import { css } from '@emotion/react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import messages from '../messages';
 import { useTheme } from '../providers/ThemeProvider';
+import { EventHandler } from '../types/Event';
 
 interface MainPageProps {
   loading?: boolean,

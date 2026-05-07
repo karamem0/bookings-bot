@@ -8,8 +8,10 @@
 
 import fs from 'fs';
 
-import { defineConfig } from 'vite';
+import babel from '@rolldown/plugin-babel';
+import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   'build': {
@@ -17,19 +19,20 @@ export default defineConfig({
     'sourcemap': true
   },
   'plugins': [
-    react({
-      'babel': {
-        'plugins': [
-          '@emotion',
-          [
-            'formatjs',
-            {
-              'ast': true,
-              'idInterpolationPattern': '[sha512:contenthash:base64:6]'
-            }
-          ]
+    babel({
+      'plugins': [
+        '@emotion',
+        [
+          'formatjs',
+          {
+            'ast': true,
+            'idInterpolationPattern': '[sha512:contenthash:base64:6]'
+          }
         ]
-      },
+      ]
+    }),
+    legacy(),
+    react({
       'jsxImportSource': '@emotion/react'
     })
   ],

@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Launch Client",
-      "type": "msedge",
+      "type": "chrome",
       "request": "launch",
       "url": "https://localhost:5173",
       "webRoot": "${workspaceFolder}",

@@ -141,12 +141,8 @@ public class BookingBusinessStep(UserState userState, IGraphService graphService
                             .ToArray();
                         if (timeSlots != null && timeSlots.Length > 0)
                         {
-                            var startTime = timeSlots
-                                .Select(slot => slot.StartTime)
-                                .Min();
-                            var endTime = timeSlots
-                                .Select(slot => slot.EndTime)
-                                .Min();
+                            var startTime = timeSlots.Min(slot => slot.StartTime);
+                            var endTime = timeSlots.Min(slot => slot.EndTime);
                             for (var currentTime = startTime; currentTime < endTime; currentTime = currentTime.Add(timeSlotInterval!.Value))
                             {
                                 if (Array.Exists(timeSlots, time => currentTime >= time.StartTime || currentTime < time.EndTime))
@@ -177,7 +173,10 @@ public class BookingBusinessStep(UserState userState, IGraphService graphService
         {
             return Task.FromResult(false);
         }
-        return Task.FromResult(true);
+        else
+        {
+            return Task.FromResult(true);
+        }
     }
 
 }

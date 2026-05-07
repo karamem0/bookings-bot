@@ -1,0 +1,32 @@
+name: Test source
+
+description: This GitHub Action tests sources and uploads reports
+
+runs:
+  using: composite
+  steps:
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.x
+    - name: Restore server
+      shell: pwsh
+      run: dotnet restore
+      working-directory: source/server
+    - name: Test server
+      shell: pwsh
+      run: |
+        dotnet test `
+          Karamem0.BookingsBot.Test/Karamem0.BookingsBot.Test.csproj `
+          -p:AltCover=true `
+          -p:AltCoverLocalSource=true `
+          -- NUnit.TestOutputXml=${{github.workspace}}/source/server/test
+      working-directory: source/server
+    - name: Upload test results
+      uses: enricomi/publish-unit-test-result-action/linux@013b82b5ab2f4b8996f689eb33ec94a96f30c437
+      if: always()
+      with:
+        files: |
+          source/client/test/**/*.xml
+          source/server/test/**/*.xml
+        check_name: Test results
