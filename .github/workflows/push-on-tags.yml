@@ -5,6 +5,9 @@ on:
     tags:
       - v*.*.*
 
+permissions:
+  contents: write
+
 jobs:
   deploy-to-github-release:
     name: Deploy to GitHub Release
