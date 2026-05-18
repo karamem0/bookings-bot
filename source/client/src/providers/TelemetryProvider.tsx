@@ -9,24 +9,24 @@
 import React from 'react';
 
 import {
-  AppInsightsContext,
   ReactPlugin,
   withAITracking
 } from '@microsoft/applicationinsights-react-js';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { telemetryConfig } from '../config/TelemetryConfig';
 
-const reactPlugin = new ReactPlugin();
+export const reactPlugin = new ReactPlugin();
+
+export const appInsights = new ApplicationInsights({
+  config: {
+    ...telemetryConfig,
+    extensions: [
+      reactPlugin
+    ]
+  }
+});
 
 try {
-  const appInsights = new ApplicationInsights({
-    config: {
-      ...telemetryConfig,
-      extensions: [
-        reactPlugin
-      ]
-    }
-  });
   appInsights.loadAppInsights();
   appInsights.trackPageView();
 } catch (error) {
@@ -38,9 +38,9 @@ function TelemetryProvider(props: React.PropsWithChildren<unknown>) {
   const { children } = props;
 
   return (
-    <AppInsightsContext.Provider value={reactPlugin}>
+    <React.Fragment>
       {children}
-    </AppInsightsContext.Provider>
+    </React.Fragment>
   );
 
 }

@@ -10,7 +10,8 @@ import React from 'react';
 
 import Presenter from './Error404Page.presenter';
 
-import { useAppInsightsContext } from '@microsoft/applicationinsights-react-js';
+import { SeverityLevel } from '@microsoft/applicationinsights-common';
+import { appInsights } from '../providers/TelemetryProvider';
 
 interface Error500PageProps {
   error?: Error
@@ -20,8 +21,6 @@ function Error500Page(props: Readonly<Error500PageProps>) {
 
   const { error } = props;
 
-  const appInsights = useAppInsightsContext();
-
   React.useEffect(() => {
     if (error == null) {
       return;
@@ -29,10 +28,9 @@ function Error500Page(props: Readonly<Error500PageProps>) {
     appInsights.trackException({ exception: error });
     appInsights.trackTrace({
       message: error.message,
-      severityLevel: 5
+      severityLevel: SeverityLevel.Critical
     });
   }, [
-    appInsights,
     error
   ]);
 
