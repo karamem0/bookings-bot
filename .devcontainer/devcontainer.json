@@ -9,8 +9,8 @@
     },
     "ghcr.io/devcontainers/features/git-lfs:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "22.22.1"
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "24.18.0"
     }
   },
   "postCreateCommand": {

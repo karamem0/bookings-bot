@@ -21,7 +21,7 @@ public class DialogAgentApplication<T>(AgentApplicationOptions options, T dialog
 
     private readonly T dialog = dialog;
 
-    [Route(RouteType = RouteType.Activity, Type = ActivityTypes.ConversationUpdate)]
+    [ConversationUpdateRoute()]
     public async Task OnConversationUpdateAsync(
         ITurnContext turnContext,
         ITurnState turnState,
@@ -42,7 +42,7 @@ public class DialogAgentApplication<T>(AgentApplicationOptions options, T dialog
         }
     }
 
-    [Route(RouteType = RouteType.Activity, Type = ActivityTypes.Message)]
+    [MessageRoute()]
     public async Task OnMessageAsync(
         ITurnContext turnContext,
         ITurnState turnState,
