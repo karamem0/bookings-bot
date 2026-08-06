@@ -35,6 +35,8 @@ runs:
     - name: Restore client
       shell: pwsh
       run: npm ci
+      env:
+        NODE_OPTIONS: --max-old-space-size=8192
       working-directory: source/client
     - name: Audit client
       shell: pwsh
@@ -43,6 +45,8 @@ runs:
     - name: Build client
       shell: pwsh
       run: npm run build
+      env:
+        NODE_OPTIONS: --max-old-space-size=8192
       working-directory: source/client
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v5

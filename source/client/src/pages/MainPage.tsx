@@ -46,7 +46,7 @@ function MainPage() {
   React.useEffect(() => {
     (async () => {
       if (msal.accounts.length > 0) {
-        msal.instance.setActiveAccount(msal.accounts[0]);
+        msal.instance.setActiveAccount(msal.accounts[0] ?? null);
         const account = msal.instance.getActiveAccount();
         if (account != null) {
           const auth = await msal.instance.acquireTokenSilent(loginParams);

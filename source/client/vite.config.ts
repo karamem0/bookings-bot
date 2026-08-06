@@ -6,34 +6,32 @@
 // https://github.com/karamem0/bookings-bot/blob/main/LICENSE
 //
 
+import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
-
-import babel from '@rolldown/plugin-babel';
-import legacy from '@vitejs/plugin-legacy';
-import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   'build': {
-    'outDir': 'dist',
+    'outDir': 'build',
     'sourcemap': true
   },
   'plugins': [
-    babel({
+    react({
+      'jsxImportSource': '@emotion/react',
       'plugins': [
-        '@emotion',
         [
-          'formatjs',
+          '@swc/plugin-emotion',
+          {
+          }
+        ],
+        [
+          '@swc/plugin-formatjs',
           {
             'ast': true,
             'idInterpolationPattern': '[sha512:contenthash:base64:6]'
           }
         ]
       ]
-    }),
-    legacy(),
-    react({
-      'jsxImportSource': '@emotion/react'
     })
   ],
   'server': {

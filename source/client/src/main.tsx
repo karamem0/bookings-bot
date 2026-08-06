@@ -7,7 +7,7 @@
 //
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import { Global } from '@emotion/react';
@@ -15,8 +15,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import {
   BrowserRouter,
   Route,
-  Switch
-} from 'react-router-dom';
+  Routes
+} from 'react-router';
 import * as ress from 'ress';
 import MsalAdapter from './components/MsalAdapter';
 import Error404Page from './pages/Error404Page';
@@ -28,7 +28,15 @@ import IntlProvider from './providers/IntlProvider';
 import MsalProvider from './providers/MsalProvider';
 import ThemeProvider from './providers/ThemeProvider';
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+
+if (rootElement == null) {
+  throw new Error('Root element not found');
+}
+
+const root = createRoot(rootElement);
+
+root.render(
   <React.Fragment>
     <Global styles={ress} />
     <BrowserRouter>
@@ -38,11 +46,10 @@ ReactDOM.render(
             fallbackRender={(props) => (
               <Error500Page error={props.error as Error} />
             )}>
-            <Switch>
+            <Routes>
               <Route
-                exact
                 path="/"
-                render={() => (
+                element={(
                   <MsalProvider>
                     <MsalAdapter>
                       <AuthenticatedTemplate>
@@ -55,17 +62,15 @@ ReactDOM.render(
                   </MsalProvider>
                 )} />
               <Route
-                exact
-                component={RedirectPage}
+                element={<RedirectPage />}
                 path="/auth_redirect" />
               <Route
-                component={Error404Page}
+                element={<Error404Page />}
                 path="*" />
-            </Switch>
+            </Routes>
           </ErrorBoundary>
         </IntlProvider>
       </ThemeProvider>
     </BrowserRouter>
-  </React.Fragment>,
-  document.getElementById('root')
+  </React.Fragment>
 );
