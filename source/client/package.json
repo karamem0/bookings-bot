@@ -66,7 +66,7 @@
   "overrides": {
     "brace-expansion": "^5.0.9",
     "core-js": "^3.49.0",
-    "fast-uri": "^3.1.5",
+    "fast-uri": "^3.1.7",
     "microsoft-cognitiveservices-speech-sdk": "^1.51.0",
     "react-redux": "^9.2.0",
     "sanitize-html": "^2.17.6",
